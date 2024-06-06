@@ -2,6 +2,7 @@ import {StyleSheet, View, Text, Pressable} from 'react-native';
 import {useEffect, useRef} from 'react';
 
 export default function () {
+  let inMotion: string = '';
   const ws = useRef<WebSocket | null>(null);
 
   useEffect(() => {
@@ -28,89 +29,82 @@ export default function () {
     };
   }, []);
 
-  const handlePressIn = () => {
-    console.log('onPressIn');
+  const handlePress = (data: Array<number>, motion: string) => {
+    inMotion = motion;
+    console.log(data);
     if (ws.current && ws.current.readyState === WebSocket.OPEN) {
       const message = {
         cmd: 1,
-        data: [4095, 4095, 4095, 4095],
+        data: data,
       };
       ws.current.send(JSON.stringify(message));
     }
   };
 
-  const handlePressOut = () => {
-    console.log('onPressOut');
-    if (ws.current && ws.current.readyState === WebSocket.OPEN) {
-      const message = {
-        cmd: 1,
-        data: [0, 0, 0, 0],
-      };
-      ws.current.send(JSON.stringify(message));
+  const handlePressTurn = (direction: string) => {
+    console.log(inMotion);
+    const powerTurnSide: number = 2095;
+    let data: Array<number> = [];
+    if (inMotion === 'front') {
+      if (direction === 'right') {
+        data = [
+          powerTurnSide + 2000,
+          powerTurnSide + 2000,
+          powerTurnSide,
+          powerTurnSide,
+        ];
+      } else if (direction === 'left') {
+        data = [
+          powerTurnSide,
+          powerTurnSide,
+          powerTurnSide + 2000,
+          powerTurnSide + 2000,
+        ];
+      } else {
+        data = [
+          powerTurnSide + 2000,
+          powerTurnSide + 2000,
+          powerTurnSide + 2000,
+          powerTurnSide + 2000,
+        ];
+      }
+    } else if (inMotion === 'back') {
+      if (direction === 'right') {
+        data = [
+          -powerTurnSide + 2000,
+          -powerTurnSide + 2000,
+          -powerTurnSide,
+          -powerTurnSide,
+        ];
+      } else if (direction === 'left') {
+        data = [
+          -powerTurnSide,
+          -powerTurnSide,
+          -powerTurnSide + 2000,
+          -powerTurnSide + 2000,
+        ];
+      } else {
+        data = [
+          -powerTurnSide + 2000,
+          -powerTurnSide + 2000,
+          -powerTurnSide + 2000,
+          -powerTurnSide + 2000,
+        ];
+      }
+    } else {
+      if (direction === 'right') {
+        data = [powerTurnSide, powerTurnSide, -powerTurnSide, -powerTurnSide];
+      } else if (direction === 'left') {
+        data = [-powerTurnSide, -powerTurnSide, powerTurnSide, powerTurnSide];
+      } else {
+        data = [0, 0, 0, 0];
+      }
     }
-  };
-
-  const handleReverseIn = () => {
-    console.log('onReverseIn');
+    console.log(data);
     if (ws.current && ws.current.readyState === WebSocket.OPEN) {
       const message = {
         cmd: 1,
-        data: [-4095, -4095, -4095, -4095],
-      };
-      ws.current.send(JSON.stringify(message));
-    }
-  };
-
-  const handleReverseOut = () => {
-    console.log('onReverseOut');
-    if (ws.current && ws.current.readyState === WebSocket.OPEN) {
-      const message = {
-        cmd: 1,
-        data: [0, 0, 0, 0],
-      };
-      ws.current.send(JSON.stringify(message));
-    }
-  };
-
-  const handleRightIn = () => {
-    console.log('onRightIn');
-    if (ws.current && ws.current.readyState === WebSocket.OPEN) {
-      const message = {
-        cmd: 1,
-        data: [4095, 4095, -4095, -4095],
-      };
-      ws.current.send(JSON.stringify(message));
-    }
-  };
-
-  const handleRightOut = () => {
-    console.log('onRightOut');
-    if (ws.current && ws.current.readyState === WebSocket.OPEN) {
-      const message = {
-        cmd: 1,
-        data: [0, 0, 0, 0],
-      };
-      ws.current.send(JSON.stringify(message));
-    }
-  };
-
-  const handleLeftIn = () => {
-    console.log('onLeftIn');
-    if (ws.current && ws.current.readyState === WebSocket.OPEN) {
-      const message = {
-        cmd: 1,
-        data: [-4095, -4095, 4095, 4095],
-      };
-      ws.current.send(JSON.stringify(message));
-    }
-  };
-
-  const handleLeftOut = () => {
-    console.log('onLeftOut');
-    if (ws.current && ws.current.readyState === WebSocket.OPEN) {
-      const message = {
-        cmd: 1,
-        data: [0, 0, 0, 0],
+        data: data,
       };
       ws.current.send(JSON.stringify(message));
     }
@@ -120,26 +114,26 @@ export default function () {
     <View style={styles.conversationItem}>
       <Pressable
         style={styles.button}
-        onPressIn={handlePressIn}
-        onPressOut={handlePressOut}>
+        onPressIn={() => handlePress([4095, 4095, 4095, 4095], 'front')}
+        onPressOut={() => handlePress([0, 0, 0, 0], '')}>
         <Text style={styles.text}>Avancer</Text>
       </Pressable>
       <Pressable
         style={styles.button}
-        onPressIn={handleReverseIn}
-        onPressOut={handleReverseOut}>
+        onPressIn={() => handlePress([-4095, -4095, -4095, -4095], 'back')}
+        onPressOut={() => handlePress([0, 0, 0, 0], '')}>
         <Text style={styles.text}>Reculer</Text>
       </Pressable>
       <Pressable
         style={styles.button}
-        onPressIn={handleRightIn}
-        onPressOut={handleRightOut}>
+        onPressIn={() => handlePressTurn('right')}
+        onPressOut={() => handlePressTurn('straight')}>
         <Text style={styles.text}>Droite</Text>
       </Pressable>
       <Pressable
         style={styles.button}
-        onPressIn={handleLeftIn}
-        onPressOut={handleLeftOut}>
+        onPressIn={() => handlePressTurn('left')}
+        onPressOut={() => handlePressTurn('straight')}>
         <Text style={styles.text}>Gauche</Text>
       </Pressable>
     </View>
