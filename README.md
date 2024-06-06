@@ -11,14 +11,29 @@ If you start the project for the first time you will have to make sur to downloa
 ```bash
 brew install react-native-cli
 brew install watchman
+
+# iOS
 brew install ruby
 brew install cocoapods
+
+# Android
+brew install --cask zulu@17
 ```
 Then realoads your shell
 
 ```bash
-# on /ios
+# iOS
+cd /ios
 pod install
+
+# Android
+# on .zshrc
+export JAVA_HOME=/Library/Java/JavaVirtualMachines/zulu-17.jdk/Contents/Home
+
+export ANDROID_HOME=$HOME/Library/Android/sdk
+export PATH=$PATH:$ANDROID_HOME/emulator
+export PATH=$PATH:$ANDROID_HOME/platform-tools
+
 ```
 
 ## Step 1: Start the Metro Server
