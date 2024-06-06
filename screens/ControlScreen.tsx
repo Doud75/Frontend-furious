@@ -33,7 +33,7 @@ export default function () {
     if (ws.current && ws.current.readyState === WebSocket.OPEN) {
       const message = {
         cmd: 1,
-        data: [2000, 2000, 2000, 2000],
+        data: [4095, 4095, 4095, 4095],
       };
       ws.current.send(JSON.stringify(message));
     }
@@ -50,14 +50,97 @@ export default function () {
     }
   };
 
+  const handleReverseIn = () => {
+    console.log('onReverseIn');
+    if (ws.current && ws.current.readyState === WebSocket.OPEN) {
+      const message = {
+        cmd: 1,
+        data: [-4095, -4095, -4095, -4095],
+      };
+      ws.current.send(JSON.stringify(message));
+    }
+  };
+
+  const handleReverseOut = () => {
+    console.log('onReverseOut');
+    if (ws.current && ws.current.readyState === WebSocket.OPEN) {
+      const message = {
+        cmd: 1,
+        data: [0, 0, 0, 0],
+      };
+      ws.current.send(JSON.stringify(message));
+    }
+  };
+
+  const handleRightIn = () => {
+    console.log('onRightIn');
+    if (ws.current && ws.current.readyState === WebSocket.OPEN) {
+      const message = {
+        cmd: 1,
+        data: [4095, 4095, -4095, -4095],
+      };
+      ws.current.send(JSON.stringify(message));
+    }
+  };
+
+  const handleRightOut = () => {
+    console.log('onRightOut');
+    if (ws.current && ws.current.readyState === WebSocket.OPEN) {
+      const message = {
+        cmd: 1,
+        data: [0, 0, 0, 0],
+      };
+      ws.current.send(JSON.stringify(message));
+    }
+  };
+
+  const handleLeftIn = () => {
+    console.log('onLeftIn');
+    if (ws.current && ws.current.readyState === WebSocket.OPEN) {
+      const message = {
+        cmd: 1,
+        data: [-4095, -4095, 4095, 4095],
+      };
+      ws.current.send(JSON.stringify(message));
+    }
+  };
+
+  const handleLeftOut = () => {
+    console.log('onLeftOut');
+    if (ws.current && ws.current.readyState === WebSocket.OPEN) {
+      const message = {
+        cmd: 1,
+        data: [0, 0, 0, 0],
+      };
+      ws.current.send(JSON.stringify(message));
+    }
+  };
+
   return (
     <View style={styles.conversationItem}>
-      <Text onPress={() => console.log('onPress')}>Button</Text>
       <Pressable
         style={styles.button}
         onPressIn={handlePressIn}
         onPressOut={handlePressOut}>
-        <Text style={styles.text}>Press Me</Text>
+        <Text style={styles.text}>Avancer</Text>
+      </Pressable>
+      <Pressable
+        style={styles.button}
+        onPressIn={handleReverseIn}
+        onPressOut={handleReverseOut}>
+        <Text style={styles.text}>Reculer</Text>
+      </Pressable>
+      <Pressable
+        style={styles.button}
+        onPressIn={handleRightIn}
+        onPressOut={handleRightOut}>
+        <Text style={styles.text}>Droite</Text>
+      </Pressable>
+      <Pressable
+        style={styles.button}
+        onPressIn={handleLeftIn}
+        onPressOut={handleLeftOut}>
+        <Text style={styles.text}>Gauche</Text>
       </Pressable>
     </View>
   );
