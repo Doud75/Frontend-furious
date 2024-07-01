@@ -163,13 +163,12 @@ const styles = StyleSheet.create({
 
 import React from 'react';
 import {View, StyleSheet} from 'react-native';
-import Joystick from '../utils/joystick.tsx';
-import Klaxon from "../utils/klaxon.tsx";
+/*import Joystick from '../utils/joystick.tsx';*/
+import Klaxon from '../utils/klaxon.tsx';
 
 const ControlScreen = () => {
   return (
     <View style={styles.container}>
-      
       <Klaxon />
     </View>
   );
