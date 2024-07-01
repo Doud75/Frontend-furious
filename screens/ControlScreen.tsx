@@ -3,6 +3,7 @@ import {View, StyleSheet} from 'react-native';
 import Joystick from '../utils/joystick.tsx';
 import Camera from '../utils/camera.tsx';
 import {WebSocketProvider} from '../context/WebSocketContext.tsx';
+import Klaxon from "../utils/klaxon.tsx";
 
 const ControlScreen = () => {
   return (
