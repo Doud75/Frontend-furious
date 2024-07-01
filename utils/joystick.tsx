@@ -8,17 +8,87 @@ const Joystick = ({radius, innerRadius}) => {
 
   const effectiveRadius = radius - innerRadius;
 
-  const calculatePower = (x: number, y: number) => {
+  /*const calculatePower = (x: number, y: number) => {
     const maxPower = 4095;
     const normX = -x / 20;
     const normY = -y / 20;
-    const motor1Power = Math.round(maxPower * (normY - normX));
-    const motor2Power = Math.round(maxPower * (normY - normX));
-    const motor3Power = Math.round(maxPower * (normY + normX));
-    const motor4Power = Math.round(maxPower * (normY + normX));
+    let motor1Power = Math.round(maxPower * (normY - normX));
+    let motor2Power = Math.round(maxPower * (normY - normX));
+    let motor3Power = Math.round(maxPower * (normY + normX));
+    let motor4Power = Math.round(maxPower * (normY + normX));
+    /!*motor1Power = motor1Power > maxPower ? maxPower : motor1Power;
+    motor1Power = motor1Power < -maxPower ? -maxPower : motor1Power;
+    motor2Power = motor2Power > maxPower ? maxPower : motor2Power;
+    motor2Power = motor2Power < -maxPower ? -maxPower : motor2Power;
+    motor3Power = motor3Power > maxPower ? maxPower : motor3Power;
+    motor3Power = motor3Power < -maxPower ? -maxPower : motor3Power;
+    motor4Power = motor4Power > maxPower ? maxPower : motor4Power;
+    motor4Power = motor4Power < -maxPower ? -maxPower : motor4Power;*!/
 
     return [motor1Power, motor2Power, motor3Power, motor4Power];
+  };*/
+
+  const calculatePower = (x: number, y: number) => {
+    const maxPower = 4095;
+    const normX = x / 20;
+    const normY = -y / 20;
+
+    let leftMotorPower = Math.round(maxPower * (normY + normX));
+    let rightMotorPower = Math.round(maxPower * (normY - normX));
+    leftMotorPower = Math.max(Math.min(leftMotorPower, maxPower), -maxPower);
+    rightMotorPower = Math.max(Math.min(rightMotorPower, maxPower), -maxPower);
+
+    return [leftMotorPower, leftMotorPower, rightMotorPower, rightMotorPower];
   };
+
+  /*const calculatePower = (x: number, y: number) => {
+    const maxPower = 4095;
+    const minPower = 500;
+    if (x === 0 && y === 0) {
+      return [0, 0, 0, 0];
+    }
+
+    let motor1Power = 0;
+    let motor2Power = 0;
+    let motor3Power = 0;
+    let motor4Power = 0;
+
+    if (x >= -18 && x <= -2) {
+      const scale = (maxPower - minPower) / 20;
+      motor1Power = Math.round(maxPower + x * scale);
+      motor2Power = motor1Power / 2;
+      motor3Power = maxPower;
+      motor4Power = maxPower;
+    } else if (x >= +2 && x <= 18) {
+      const scale = (maxPower - minPower) / 20;
+      motor1Power = maxPower;
+      motor2Power = maxPower;
+      motor3Power = Math.round(maxPower - x * scale);
+      motor4Power = motor3Power / 2;
+    } else if (x < 2 && x > -2) {
+      motor1Power = maxPower;
+      motor2Power = maxPower;
+      motor3Power = maxPower;
+      motor4Power = maxPower;
+    } else if (x > 18) {
+      motor1Power = maxPower;
+      motor2Power = maxPower;
+      motor3Power = -maxPower;
+      motor4Power = -maxPower;
+    } else if (x < -18) {
+      motor1Power = -maxPower;
+      motor2Power = -maxPower;
+      motor3Power = +maxPower;
+      motor4Power = +maxPower;
+    }
+    if (y < 0) {
+      return [motor1Power, motor2Power, motor3Power, motor4Power];
+    } else {
+      return [-motor1Power, -motor2Power, -motor3Power, -motor4Power];
+    }
+  };*/
+
+  let lastSentTime = 0;
 
   const panResponder = PanResponder.create({
     onStartShouldSetPanResponder: () => true,
@@ -26,24 +96,24 @@ const Joystick = ({radius, innerRadius}) => {
       const newX = position.x + gesture.dx;
       const newY = position.y + gesture.dy;
 
-      // Calculate distance from center
       const distance = Math.sqrt(Math.pow(newX, 2) + Math.pow(newY, 2));
 
-      // If the move is within the effective radius, update position
       if (distance < effectiveRadius) {
         setPosition({x: newX, y: newY});
         const power = calculatePower(newX, newY);
-        // Envoyer les données via WebSocket
-        if (ws.current && ws.current?.readyState === WebSocket.OPEN) {
+        if (
+          ws.current &&
+          ws.current?.readyState === WebSocket.OPEN &&
+          Date.now() - lastSentTime > 1000
+        ) {
           const message = {
             cmd: 1,
             data: power,
           };
-          console.log(power);
           ws.current.send(JSON.stringify(message));
+          lastSentTime = Date.now();
         }
       } else {
-        // Limit movement to stay within the effective radius
         const angle = Math.atan2(newY, newX);
         setPosition({
           x: Math.cos(angle) * effectiveRadius,
@@ -53,29 +123,34 @@ const Joystick = ({radius, innerRadius}) => {
           Math.cos(angle) * effectiveRadius,
           Math.sin(angle) * effectiveRadius,
         );
-        // Envoyer les données via WebSocket
-        if (ws.current && ws.current?.readyState === WebSocket.OPEN) {
+        if (
+          ws.current &&
+          ws.current?.readyState === WebSocket.OPEN &&
+          Date.now() - lastSentTime > 1000
+        ) {
           const message = {
             cmd: 1,
             data: power,
           };
-          console.log(power);
           ws.current.send(JSON.stringify(message));
+          lastSentTime = Date.now();
         }
       }
     },
     onPanResponderRelease: () => {
-      // Reset position when the touch is released
       setPosition({x: 0, y: 0});
       const power = calculatePower(0, 0);
-      // Envoyer les données via WebSocket
-      if (ws.current && ws.current?.readyState === WebSocket.OPEN) {
+      if (
+        ws.current &&
+        ws.current?.readyState === WebSocket.OPEN &&
+        Date.now() - lastSentTime > 1000
+      ) {
         const message = {
           cmd: 1,
           data: power,
         };
-        console.log(power);
         ws.current.send(JSON.stringify(message));
+        lastSentTime = Date.now();
       }
     },
   });
