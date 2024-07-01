@@ -1,34 +1,23 @@
-// ButtonComponent.js
 import React, {useEffect, useRef} from 'react';
 import {TouchableOpacity, Text, StyleSheet, Alert} from 'react-native';
 
-const Klaxon = () => {
+const KlaxonButton = () => {
+  const ON = "on"
+  const OFF = "off"
+  
   const ws = useRef<WebSocket | null>(null);
-  const showAlert = () => {
+  const Klaxon = (active : string) => {
     if (ws.current && ws.current?.readyState === WebSocket.OPEN) {
       const message = {
         cmd: 7,
-        data: 1,
-      };
-      console.log(JSON.stringify(message));
-      ws.current.send(JSON.stringify(message));
-      setTimeout(stop, 2000);
-    }
-  };
-
-  const stop = () => {
-    if (ws.current && ws.current?.readyState === WebSocket.OPEN) {
-      const message = {
-        cmd: 7,
-        data: 0,
-      };
-      console.log(message);
-      ws.current.send(JSON.stringify(message));
+        data: active == ON ? 1 : 0,
+      }
+     ws.current.send(JSON.stringify(message));
     }
   };
 
   useEffect(() => {
-    ws.current = new WebSocket('ws://192.168.43.12/grp4');
+    ws.current = new WebSocket('ws://192.168.13.12/grp4');
 
     ws.current.onopen = () => {
       console.log('WebSocket connected');
@@ -52,7 +41,7 @@ const Klaxon = () => {
   }, []);
 
   return (
-    <TouchableOpacity style={styles.button} onPress={showAlert}>
+    <TouchableOpacity style={styles.button} onPressIn={() => Klaxon(ON)} onPressOut={() => Klaxon(OFF)}>
       <Text style={styles.buttonText}>Klaxon</Text>
     </TouchableOpacity>
   );
@@ -71,4 +60,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Klaxon;
+export default KlaxonButton;
