@@ -3,13 +3,14 @@ import {View, StyleSheet} from 'react-native';
 import Joystick from '../utils/joystick.tsx';
 import Camera from '../utils/camera.tsx';
 import {WebSocketProvider} from '../context/WebSocketContext.tsx';
-import Klaxon from "../utils/klaxon.tsx";
+import Klaxon from "../utils/klaxonButton.tsx";
 
 const ControlScreen = () => {
   return (
     <WebSocketProvider>
       <View style={styles.container}>
         <Joystick radius={100} innerRadius={80} />
+        <Klaxon />
       </View>
       <View style={styles.camera}>
         <Camera />
