@@ -7,16 +7,7 @@ const {width, height} = Dimensions.get('window');
 
 const Camera: React.FC = () => {
   const [ws] = useWebSocket();
-  useEffect(() => {
-    if (ws && ws.readyState === WebSocket.OPEN) {
-      const message = {
-        cmd: 9,
-        data: 1,
-      };
-      ws.send(JSON.stringify(message));
-      console.log('camera on');
-    }
-  }, []);
+ 
   return (
     <WebView
       scalesPageToFit={true}

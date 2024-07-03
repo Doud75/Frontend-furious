@@ -12,9 +12,11 @@ import {RootState} from "../reducer/store.tsx";
 const WebSocketContext = createContext<
   | [WebSocket | undefined, Dispatch<SetStateAction<WebSocket | undefined>>]
   | undefined
->(undefined);
+>(undefined)
 
-export const WebSocketProvider: React.FC<PropsWithChildren> = ({children}) => {
+
+
+export const WebSocketProvider: React.FC<PropsWithChildren> = ({children, camera = false}) => {
   const [ws, setWs] = useState<WebSocket>();
   const formData = useSelector((state: RootState) => state.formData);
   
@@ -26,6 +28,14 @@ export const WebSocketProvider: React.FC<PropsWithChildren> = ({children}) => {
 
     localWs.onopen = () => {
       console.log('WebSocket connected');
+      if (camera) {
+        const message = {
+          cmd: 9,
+          data: 1,
+        };
+        localWs.send(JSON.stringify(message));
+        console.log('camera on'); 
+      }
     };
 
     localWs.onmessage = e => {

@@ -7,7 +7,7 @@ import Klaxon from "../utils/klaxonButton.tsx";
 
 const ControlScreen = () => {
   return (
-    <WebSocketProvider>
+    <WebSocketProvider camera={true}>
       <View style={styles.container}>
         <Joystick radius={100} innerRadius={80} />
         <Klaxon />
