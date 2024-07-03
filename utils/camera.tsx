@@ -22,7 +22,7 @@ const Camera: React.FC = () => {
       style={{height: width, width: height}}
       source={{
         html: `
-          <img style="display: block;-webkit-user-select: none;margin: auto;" src="http://192.168.43.12:7000/" width="100%" alt="">
+          <img style="display: block;-webkit-user-select: none;margin: auto;" src="http://192.168.13.12:7000/" width="100%" alt="">
         `,
       }}
       automaticallyAdjustContentInsets={false}

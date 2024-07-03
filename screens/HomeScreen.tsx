@@ -7,6 +7,10 @@ const HomeScreen = ({ navigation }) => {
         <View style={styles.container}>
             <Text style={styles.text}>Home Screen</Text>
             <Button
+                title="Login"
+                onPress={() => navigation.navigate('Login')}
+            />
+            <Button
                 title="Mode libre"
                 onPress={() => navigation.navigate('FreeRace')}
             />

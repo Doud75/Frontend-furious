@@ -6,6 +6,8 @@ import React, {
   Dispatch,
   SetStateAction,
 } from 'react';
+import {useSelector} from "react-redux";
+import {RootState} from "../reducer/store.tsx";
 
 const WebSocketContext = createContext<
   | [WebSocket | undefined, Dispatch<SetStateAction<WebSocket | undefined>>]
@@ -14,9 +16,12 @@ const WebSocketContext = createContext<
 
 export const WebSocketProvider: React.FC<PropsWithChildren> = ({children}) => {
   const [ws, setWs] = useState<WebSocket>();
-
+  const formData = useSelector((state: RootState) => state.formData);
+  
   useEffect(() => {
-    const localWs = new WebSocket('ws://192.168.43.12/grp4');
+    console.log(formData.ip)
+
+    const localWs = new WebSocket(`ws://${formData.ip}/${formData.ws}`);
     setWs(localWs);
 
     localWs.onopen = () => {
