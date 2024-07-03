@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from "react";
 import {Dimensions} from 'react-native';
 import WebView from 'react-native-webview';
 import {useWebSocket} from '../context/WebSocketContext.tsx';
@@ -7,13 +7,16 @@ const {width, height} = Dimensions.get('window');
 
 const Camera: React.FC = () => {
   const [ws] = useWebSocket();
-  if (ws && ws.readyState === WebSocket.OPEN) {
-    const message = {
-      cmd: 9,
-      data: 1,
-    };
-    ws.send(JSON.stringify(message));
-  }
+  useEffect(() => {
+    if (ws && ws.readyState === WebSocket.OPEN) {
+      const message = {
+        cmd: 9,
+        data: 1,
+      };
+      ws.send(JSON.stringify(message));
+      console.log('camera on');
+    }
+  }, []);
   return (
     <WebView
       scalesPageToFit={true}
