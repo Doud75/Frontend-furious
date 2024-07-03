@@ -7,7 +7,7 @@ import {Provider} from 'react-redux';
 import store from '../reducer/store.tsx';
 import RacingScreen from '../screens/RacingScreen.tsx';
 import HomeScreen from '../screens/HomeScreen.tsx';
-import CustomScreen from '../screens/CustomScreen.tsx'; // Importer WebSocketProvider
+import CustomScreen from '../screens/CustomScreen.tsx';
 
 const Stack = createNativeStackNavigator();
 
