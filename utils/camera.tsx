@@ -6,8 +6,6 @@ import {useWebSocket} from '../context/WebSocketContext.tsx';
 const {width, height} = Dimensions.get('window');
 
 const Camera: React.FC = () => {
-  const [ws] = useWebSocket();
- 
   return (
     <WebView
       scalesPageToFit={true}

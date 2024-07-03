@@ -1,27 +1,33 @@
 import React, {
   createContext,
   useEffect,
-  PropsWithChildren,
   useState,
   Dispatch,
   SetStateAction,
+  ReactNode,
 } from 'react';
-import {useSelector} from "react-redux";
-import {RootState} from "../reducer/store.tsx";
+import {useSelector} from 'react-redux';
+import {RootState} from '../reducer/store.tsx';
 
 const WebSocketContext = createContext<
   | [WebSocket | undefined, Dispatch<SetStateAction<WebSocket | undefined>>]
   | undefined
->(undefined)
+>(undefined);
 
+interface webSocketProps {
+  children: ReactNode;
+  camera: boolean;
+}
 
-
-export const WebSocketProvider: React.FC<PropsWithChildren> = ({children, camera = false}) => {
+export const WebSocketProvider: React.FC<webSocketProps> = ({
+  children,
+  camera = false,
+}) => {
   const [ws, setWs] = useState<WebSocket>();
   const formData = useSelector((state: RootState) => state.formData);
-  
+
   useEffect(() => {
-    console.log(formData.ip)
+    console.log(formData.ip);
 
     const localWs = new WebSocket(`ws://${formData.ip}/${formData.ws}`);
     setWs(localWs);
@@ -34,7 +40,7 @@ export const WebSocketProvider: React.FC<PropsWithChildren> = ({children, camera
           data: 1,
         };
         localWs.send(JSON.stringify(message));
-        console.log('camera on'); 
+        console.log('camera on');
       }
     };
 
