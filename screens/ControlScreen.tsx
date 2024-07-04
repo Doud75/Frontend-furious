@@ -8,8 +8,10 @@ import Klaxon from "../utils/klaxonButton.tsx";
 const ControlScreen = () => {
   return (
     <WebSocketProvider camera={true}>
-      <View style={styles.container}>
-        <Joystick radius={100} innerRadius={80} />
+      <View style={styles.joystick}>
+        <Joystick radius={60} innerRadius={45} />
+      </View>
+      <View style={styles.klaxon}>
         <Klaxon />
       </View>
       <View style={styles.camera}>
@@ -20,21 +22,33 @@ const ControlScreen = () => {
 };
 
 const styles = StyleSheet.create({
-  container: {
+  joystick: {
     zIndex: 2,
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'white',
+    width: 'auto',
+    backgroundColor: 'yellow',
     position: 'absolute',
+    bottom: "10%",
+    left: "5%",
+  },
+  klaxon: {
+    zIndex: 2,
+    backgroundColor: 'yellow',
+    position: 'absolute',
+    bottom: "10%",
+    right: "5%",
+    width: '20%',
   },
   camera: {
     zIndex: 1,
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'white',
+    // flex: 1,
+    // justifyContent: 'center',
+    // alignItems: 'center',
+    // backgroundColor: 'white',
     position: 'absolute',
+    width: '100%',
+    backgroundColor:'red',
+    top: 0,
+    left: 0,
   },
 });
 

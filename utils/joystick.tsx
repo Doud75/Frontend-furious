@@ -15,8 +15,8 @@ const Joystick: React.FC<JoystickProps> = ({radius, innerRadius}) => {
 
   const calculatePower = (x: number, y: number) => {
     const maxPower = 4095;
-    const normX = x / 20;
-    const normY = -y / 20;
+    const normX = x / 15;
+    const normY = -y / 15;
 
     let leftMotorPower = Math.round(maxPower * (normY + normX));
     let rightMotorPower = Math.round(maxPower * (normY - normX));
