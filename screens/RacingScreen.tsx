@@ -8,13 +8,13 @@ import {socketUrl} from '../config.json';
 type RacingScreenRouteProp = RouteProp<RootStackParamList, 'Racing'>;
 const Racing: React.FC = () => {
   const route = useRoute<RacingScreenRouteProp>();
-  const {raceId, raceName} = route.params;
+  const {raceId} = route.params;
   useEffect(() => {
     const socket = io(socketUrl);
     console.log(socketUrl);
 
-    socket.emit('joinGroup', raceName);
-    console.log(raceName);
+    socket.emit('joinGroup', raceId);
+    console.log(raceId);
 
     socket.on('newMessage', message => {
       console.log(message);
@@ -24,7 +24,7 @@ const Racing: React.FC = () => {
       console.log('return');
       socket.disconnect();
     };
-  }, [raceName]);
+  }, [raceId]);
   return (
     <View style={styles.container}>
       <Text>Racing</Text>
