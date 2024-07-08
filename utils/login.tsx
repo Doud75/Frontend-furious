@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View, TextInput, Button, StyleSheet} from 'react-native';
+import {View, TextInput, Button, StyleSheet, Text} from 'react-native';
 import {setFormData} from '../reducer/actions';
 import {useDispatch, useSelector} from 'react-redux';
 import {apiUrlBack} from '../config.json';
@@ -12,7 +12,7 @@ interface StateProps {
 
 interface FormDataProps {
   ip: string;
-  ws: string;
+  topic: string;
   username: string;
 }
 
@@ -24,7 +24,9 @@ const Login: React.FC<LoginProps> = ({navigation}) => {
   const dispatch = useDispatch();
   const formData = useSelector((state: StateProps) => state.formData);
   const [formState, setFormState] = useState<FormDataProps>(formData);
-
+  const [required, setRequired] = useState('');
+  
+  
   const handleChange = (name: string, value: string) => {
     setFormState({
       ...formState,
@@ -35,8 +37,15 @@ const Login: React.FC<LoginProps> = ({navigation}) => {
   const signIn = async () => {
     const username = formState.username;
     const ip = formState.ip;
-    console.log(username);
-    console.log(ip);
+    const topic = formState.topic;
+    
+    
+    if(username == null || ip == null || topic == null){
+      let requiredString = "Veuillez remplir tout les champs"
+      setRequired(requiredString)
+      
+      return
+    }
     try {
       const response = await fetch(`${apiUrlBack}/signin`, {
         method: 'POST',
@@ -53,7 +62,8 @@ const Login: React.FC<LoginProps> = ({navigation}) => {
         throw new Error('Network response was not ok');
       }
 
-      return response.json();
+      navigation.navigate('Home');
+      
     } catch (error) {
       console.log('Error submitting data:', error);
     }
@@ -62,13 +72,14 @@ const Login: React.FC<LoginProps> = ({navigation}) => {
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     dispatch(setFormData(formState));
-    const dataRace = await signIn();
-    console.log(dataRace);
-    navigation.navigate('Home');
+    await signIn();
   };
 
   return (
     <View style={styles.container}>
+      <Text style={styles.text}>
+        {required}
+      </Text>
       <TextInput
         style={styles.input}
         placeholder="IP"
@@ -77,9 +88,9 @@ const Login: React.FC<LoginProps> = ({navigation}) => {
       />
       <TextInput
         style={styles.input}
-        placeholder="Ws"
-        value={formState.ws || ''}
-        onChangeText={text => handleChange('ws', text)}
+        placeholder="topic"
+        value={formState.topic || ''}
+        onChangeText={text => handleChange('topic', text)}
       />
       <TextInput
         style={styles.input}
@@ -101,6 +112,12 @@ const styles = StyleSheet.create({
     height: 40,
     borderColor: 'gray',
     borderWidth: 1,
+    marginBottom: 10,
+    paddingLeft: 8,
+  },
+  text: {
+    color: 'red',
+    height: 40,
     marginBottom: 10,
     paddingLeft: 8,
   },
