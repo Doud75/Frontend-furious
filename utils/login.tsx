@@ -32,36 +32,37 @@ const Login: React.FC<LoginProps> = ({navigation}) => {
     });
   };
 
-  const handleSubmit = (e: any) => {
-    const signIn = async () => {
-      const username = formData.username;
-      const ip = formData.ip;
-      try {
-        const response = await fetch(`${apiUrlBack}/signin`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            username,
-            ip,
-          }),
-        });
+  const signIn = async () => {
+    const username = formData.username;
+    const ip = formData.ip;
+    try {
+      const response = await fetch(`${apiUrlBack}/signin`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          username,
+          ip,
+        }),
+      });
 
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        console.log('ok ok');
-      } catch (error) {
-        console.log('Error submitting data:', error);
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
       }
-    };
 
+      return response.json();
+    } catch (error) {
+      console.log('Error submitting data:', error);
+    }
+  };
+
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
     dispatch(setFormData(formState));
-
-    signIn().then(r => console.log('connected'));
-    navigation.navigate('Home');
+    const dataRace = await signIn();
+    console.log(dataRace);
+    /*navigation.navigate('Home');*/
   };
 
   return (
