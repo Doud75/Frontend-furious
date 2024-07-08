@@ -1,7 +1,8 @@
-import React, {useState} from 'react';
-import {View, TextInput, Button, StyleSheet} from 'react-native';
+import React, {useContext, useState} from 'react';
+import {View, TextInput, Button, Text, StyleSheet} from 'react-native';
 import {setFormData} from '../reducer/actions';
 import {useDispatch, useSelector} from 'react-redux';
+import {apiUrlBack} from '../config.json';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootStackParamList} from '../types/types.ts';
 
@@ -31,8 +32,35 @@ const Login: React.FC<LoginProps> = ({navigation}) => {
     });
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = (e: any) => {
+    const signIn = async () => {
+      const username = formData.username;
+      const ip = formData.ip;
+      try {
+        const response = await fetch(`${apiUrlBack}/signin`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            username,
+            ip,
+          }),
+        });
+
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        console.log('ok ok');
+      } catch (error) {
+        console.log('Error submitting data:', error);
+      }
+    };
+
+    e.preventDefault();
     dispatch(setFormData(formState));
+
+    signIn().then(r => console.log('connected'));
     navigation.navigate('Home');
   };
 
