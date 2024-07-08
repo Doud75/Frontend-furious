@@ -1,5 +1,5 @@
-import React, {useContext, useState} from 'react';
-import {View, TextInput, Button, Text, StyleSheet} from 'react-native';
+import React, {useState} from 'react';
+import {View, TextInput, Button, StyleSheet} from 'react-native';
 import {setFormData} from '../reducer/actions';
 import {useDispatch, useSelector} from 'react-redux';
 import {apiUrlBack} from '../config.json';
@@ -33,8 +33,10 @@ const Login: React.FC<LoginProps> = ({navigation}) => {
   };
 
   const signIn = async () => {
-    const username = formData.username;
-    const ip = formData.ip;
+    const username = formState.username;
+    const ip = formState.ip;
+    console.log(username);
+    console.log(ip);
     try {
       const response = await fetch(`${apiUrlBack}/signin`, {
         method: 'POST',
@@ -62,7 +64,7 @@ const Login: React.FC<LoginProps> = ({navigation}) => {
     dispatch(setFormData(formState));
     const dataRace = await signIn();
     console.log(dataRace);
-    /*navigation.navigate('Home');*/
+    navigation.navigate('Home');
   };
 
   return (
