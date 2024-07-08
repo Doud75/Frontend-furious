@@ -1,23 +1,30 @@
 import React, {useEffect} from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import io from 'socket.io-client';
+import {RouteProp, useRoute} from '@react-navigation/native';
+import {RootStackParamList} from '../types/types.ts';
+import {socketUrl} from '../config.json';
 
-const Racing = () => {
+type RacingScreenRouteProp = RouteProp<RootStackParamList, 'Racing'>;
+const Racing: React.FC = () => {
+  const route = useRoute<RacingScreenRouteProp>();
+  const {raceId, raceName} = route.params;
   useEffect(() => {
-    console.log('start');
-    const socket = io('http://192.168.43.114:4500');
-    console.log('start');
+    const socket = io(socketUrl);
+    console.log(socketUrl);
 
-    socket.emit('joinGroup', 'idCourse');
+    socket.emit('joinGroup', raceName);
+    console.log(raceName);
 
     socket.on('newMessage', message => {
       console.log(message);
     });
+
     return () => {
       console.log('return');
       socket.disconnect();
     };
-  }, []);
+  }, [raceName]);
   return (
     <View style={styles.container}>
       <Text>Racing</Text>

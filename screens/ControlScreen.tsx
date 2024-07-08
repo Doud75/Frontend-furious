@@ -1,17 +1,16 @@
-import React, { useEffect } from "react";
+import React, {useEffect} from 'react';
 import {View, StyleSheet} from 'react-native';
 import Joystick from '../utils/joystick.tsx';
 import Camera from '../utils/camera.tsx';
 import {WebSocketProvider} from '../context/WebSocketContext.tsx';
 import Klaxon from '../utils/klaxonButton.tsx';
 import io from 'socket.io-client';
+import config from '../config.json';
 
 const ControlScreen = () => {
-
   useEffect(() => {
-    console.log('start');
-    const socket = io('http://192.168.43.114:4500');
-    console.log('start');
+    console.log('webSocket started on ', config.socketUrl);
+    const socket = io('config.socketUrl');
 
     socket.emit('joinGroup', 'idCourse');
 
