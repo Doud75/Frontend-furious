@@ -29,7 +29,7 @@ export const WebSocketProvider: React.FC<webSocketProps> = ({
   useEffect(() => {
     console.log(formData.ip);
 
-    const localWs = new WebSocket(`ws://${formData.ip}/${formData.ws}`);
+    const localWs = new WebSocket(`ws://${formData.ip}/${formData.topic}`);
     setWs(localWs);
 
     localWs.onopen = () => {
