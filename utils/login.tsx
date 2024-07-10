@@ -14,6 +14,7 @@ interface FormDataProps {
   ip: string;
   topic: string;
   username: string;
+  id : number;
 }
 
 type LoginProps = {
@@ -25,6 +26,7 @@ const Login: React.FC<LoginProps> = ({navigation}) => {
   const formData = useSelector((state: StateProps) => state.formData);
   const [formState, setFormState] = useState<FormDataProps>(formData);
   const [required, setRequired] = useState('');
+  const [loginResponse, setLoginResponse] = useState('');
   
   
   const handleChange = (name: string, value: string) => {
@@ -62,7 +64,7 @@ const Login: React.FC<LoginProps> = ({navigation}) => {
         throw new Error('Network response was not ok');
       }
 
-      navigation.navigate('Home');
+      return response.json()
       
     } catch (error) {
       console.log('Error submitting data:', error);
@@ -71,8 +73,10 @@ const Login: React.FC<LoginProps> = ({navigation}) => {
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    dispatch(setFormData(formState));
-    await signIn();
+    setLoginResponse(await signIn())
+    
+    dispatch(setFormData(loginResponse));
+    navigation.navigate('Home');
   };
 
   return (
