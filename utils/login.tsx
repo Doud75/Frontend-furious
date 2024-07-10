@@ -64,8 +64,9 @@ const Login: React.FC<LoginProps> = ({navigation}) => {
         throw new Error('Network response was not ok');
       }
 
-      return response.json()
-      
+      setLoginResponse(await response.json())
+      dispatch(setFormData(loginResponse));
+      navigation.navigate('Home');      
     } catch (error) {
       console.log('Error submitting data:', error);
     }
@@ -73,10 +74,7 @@ const Login: React.FC<LoginProps> = ({navigation}) => {
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    setLoginResponse(await signIn())
-    
-    dispatch(setFormData(loginResponse));
-    navigation.navigate('Home');
+    await signIn();
   };
 
   return (
