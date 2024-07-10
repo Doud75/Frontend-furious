@@ -19,10 +19,9 @@ const ControlScreen = () => {
   const {raceId} = route.params;
   useEffect(() => {
     const socket = io(socketUrl);
-    console.log(socketUrl);
+    console.log('socketUrl from Control', formData.name, socketUrl);
 
     socket.emit('joinGroup', raceId);
-    console.log(raceId);
 
     if (raceId) {
       fetch(`${apiUrlBack}/join-race`, {
