@@ -12,11 +12,19 @@ const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
       <Button title="Login" onPress={() => navigation.navigate('Login')} />
       <Button
         title="Mode libre"
-        onPress={() => navigation.navigate('FreeRace')}
+        onPress={() =>
+          navigation.navigate('FreeRace', {
+            raceId: '',
+          })
+        }
       />
       <Button
         title="Personnalisation"
         onPress={() => navigation.navigate('Custom')}
+      />
+      <Button
+        title="Liste des courses"
+        onPress={() => navigation.navigate('RaceList')}
       />
     </View>
   );

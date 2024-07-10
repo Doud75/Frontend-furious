@@ -22,7 +22,7 @@ const RacingForm: React.FC<RacingFormScreenProps> = ({navigation}) => {
 
   async function createRace() {
     if (raceName) {
-      const response = await fetch(`${apiUrlBack}/createRace`, {
+      const response = await fetch(`${apiUrlBack}/create-race`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

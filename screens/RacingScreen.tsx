@@ -3,7 +3,7 @@ import {View, Text, StyleSheet} from 'react-native';
 import io from 'socket.io-client';
 import {RouteProp, useRoute} from '@react-navigation/native';
 import {RootStackParamList} from '../types/types.ts';
-import {socketUrl} from '../config.json';
+import {socketUrl, apiUrlBack} from '../config.json';
 
 type RacingScreenRouteProp = RouteProp<RootStackParamList, 'Racing'>;
 const Racing: React.FC = () => {
@@ -18,10 +18,13 @@ const Racing: React.FC = () => {
 
     socket.on('newMessage', message => {
       console.log(message);
+      console.log('from me');
     });
 
     return () => {
       console.log('return');
+      const response = closeRace(raceId);
+      console.log(response);
       socket.disconnect();
     };
   }, [raceId]);
@@ -31,6 +34,22 @@ const Racing: React.FC = () => {
     </View>
   );
 };
+
+async function closeRace(raceId: string): Promise<string> {
+  const response = await fetch(`${apiUrlBack}/close-race`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      raceId,
+    }),
+  });
+  if (!response.ok) {
+    throw new Error(`Reponse HTTP : ${response.status}`);
+  }
+  return await response.json();
+}
 
 const styles = StyleSheet.create({
   container: {

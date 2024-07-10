@@ -10,6 +10,7 @@ import RacingFormScreen from '../screens/RacingFormScreen.tsx';
 import HomeScreen from '../screens/HomeScreen.tsx';
 import CustomScreen from '../screens/CustomScreen.tsx';
 import {RootStackParamList} from '../types/types.ts';
+import RaceList from '../screens/RaceList.tsx';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -24,6 +25,7 @@ export default function () {
           <Stack.Screen name="RacingForm" component={RacingFormScreen} />
           <Stack.Screen name="Racing" component={RacingScreen} />
           <Stack.Screen name="Custom" component={CustomScreen} />
+          <Stack.Screen name="RaceList" component={RaceList} />
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>

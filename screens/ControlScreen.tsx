@@ -5,24 +5,58 @@ import Camera from '../utils/camera.tsx';
 import {WebSocketProvider} from '../context/WebSocketContext.tsx';
 import Klaxon from '../utils/klaxonButton.tsx';
 import io from 'socket.io-client';
-import config from '../config.json';
+import {socketUrl} from '../config.json';
+import {RouteProp, useRoute} from '@react-navigation/native';
+import {RootStackParamList} from '../types/types.ts';
+import {useSelector} from 'react-redux';
+import {RootState} from '../reducer/store.tsx';
+import {apiUrlBack} from '../config.json';
 
+type ControlScreenRouteProp = RouteProp<RootStackParamList, 'FreeRace'>;
 const ControlScreen = () => {
+  const formData = useSelector((state: RootState) => state.formData);
+  const route = useRoute<ControlScreenRouteProp>();
+  const {raceId} = route.params;
   useEffect(() => {
-    console.log('webSocket started on ', config.socketUrl);
-    const socket = io('config.socketUrl');
+    const socket = io(socketUrl);
+    console.log(socketUrl);
 
-    socket.emit('joinGroup', 'idCourse');
+    socket.emit('joinGroup', raceId);
+    console.log(raceId);
+
+    if (raceId) {
+      fetch(`${apiUrlBack}/join-race`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          raceId,
+          formData,
+        }),
+      })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error(`Réponse HTTP : ${response.status}`);
+          }
+          return response.json();
+        })
+        .then(data => {
+          console.log(data);
+        })
+        .catch(error => {
+          console.error('Erreur :', error);
+        });
+    }
 
     socket.on('newMessage', message => {
       console.log(message);
-      console.log('from Control Screen');
     });
     return () => {
       console.log('return');
       socket.disconnect();
     };
-  }, []);
+  }, [formData, raceId]);
 
   return (
     <WebSocketProvider camera={true}>
