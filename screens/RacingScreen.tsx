@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useRef} from 'react';
 import {
   View,
   Text,
@@ -20,13 +20,20 @@ interface ConnectedProps {
   ip: string;
   topic: string;
 }
+
 const Racing: React.FC = () => {
   const route = useRoute<RacingScreenRouteProp>();
-  const {raceId} = route.params;
+  const {raceId, tourCount} = route.params;
   const [connectedPlayer, setConnectedPlayer] = useState<ConnectedProps[]>([]);
   const [startRace, setStartRace] = useState(false);
+  const [winner, setWinner] = useState('');
+  const socketRef = useRef<any>(null);
+  const [nbOfTour, setNbOfTour] = useState<number[]>([]);
+
   useEffect(() => {
     const socket = io(socketUrl);
+    socketRef.current = socket;
+
     console.log('socketUrl from referee', socketUrl);
 
     socket.emit('joinGroup', raceId);
@@ -34,37 +41,58 @@ const Racing: React.FC = () => {
     socket.on('newMessage', message => {
       console.log('new message from referee', message);
       if (message.numberOfPlayer) {
-        setConnectedPlayer([...connectedPlayer, message.playerInfo]);
+        setConnectedPlayer(prevPlayers => {
+          const newPlayers = [...prevPlayers, message.playerInfo];
+          setNbOfTour(new Array(newPlayers.length).fill(0));
+          return newPlayers;
+        });
       }
     });
 
     return () => {
       console.log('return from referee');
       const cleanUp = async () => {
-        const response = await closeRace(raceId);
+        const response = await closeRace(raceId, '');
         console.log('close race from referee', response);
         socket.disconnect();
       };
       cleanUp();
     };
-  }, [connectedPlayer, raceId]);
+  }, [raceId]);
+
+  const incrementTour = (index: number, userName: string) => {
+    setNbOfTour(prevTours => {
+      const updatedTours = [...prevTours];
+      updatedTours[index] += 1;
+      return updatedTours;
+    });
+    if (nbOfTour[index] === Number(tourCount) && winner !== '') {
+      setWinner(userName);
+    }
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <FlatList
         data={connectedPlayer}
         keyExtractor={item => item.id}
-        renderItem={({item}) => (
+        renderItem={({item, index}) => (
           <View style={styles.conversationDetails} key={item.id}>
-            {startRace && (
-              <Button
-                onPress={() => {
-                  console.log('+1 tour');
-                }}
-                title="+1 tour"
-                color="#841584"
-              />
-            )}
             <View style={styles.nameContentContainer}>
+              {startRace && (
+                <>
+                  <Button
+                    onPress={() => {
+                      incrementTour(index, item.username);
+                    }}
+                    title="+1 tour"
+                    color="#841584"
+                  />
+                  <Text style={styles.conversationName}>
+                    {nbOfTour[index]}/{tourCount}
+                  </Text>
+                </>
+              )}
               <Text style={styles.conversationName}>{item.username}</Text>
             </View>
           </View>
@@ -81,8 +109,9 @@ const Racing: React.FC = () => {
       )}
       {startRace && (
         <Button
-          onPress={() => {
-            closeRace(raceId);
+          onPress={async () => {
+            await closeRace(raceId, winner);
+            setStartRace(false);
           }}
           title="stop race"
           color="#841584"
@@ -92,7 +121,7 @@ const Racing: React.FC = () => {
   );
 };
 
-async function closeRace(raceId: string) {
+async function closeRace(raceId: string, winner: string) {
   const response = await fetch(`${apiUrlBack}/close-race`, {
     method: 'POST',
     headers: {
@@ -100,6 +129,7 @@ async function closeRace(raceId: string) {
     },
     body: JSON.stringify({
       raceId,
+      winner,
     }),
   });
   if (!response.ok) {

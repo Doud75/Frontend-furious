@@ -17,11 +17,13 @@ const WebSocketContext = createContext<
 interface webSocketProps {
   children: ReactNode;
   camera: boolean;
+  nbPlayer: string;
 }
 
 export const WebSocketProvider: React.FC<webSocketProps> = ({
   children,
   camera = false,
+  nbPlayer = '',
 }) => {
   const [ws, setWs] = useState<WebSocket>();
   const formData = useSelector((state: RootState) => state.formData);
@@ -42,6 +44,29 @@ export const WebSocketProvider: React.FC<webSocketProps> = ({
         localWs.send(JSON.stringify(message));
         console.log('camera on');
       }
+      if (nbPlayer !== '') {
+        const message = {
+          cmd: 4,
+          data: 0,
+        };
+        localWs.send(JSON.stringify(message));
+        console.log('led off');
+        const message2 = {
+          cmd: 4,
+          data: 1,
+        };
+        localWs.send(JSON.stringify(message2));
+        console.log('led ready');
+        let itemValue = nbPlayer === '1' ? [1, 255, 0, 0] : [1, 0, 0, 255];
+        while (itemValue[0] <= 2048) {
+          const message = {
+            cmd: 5,
+            data: itemValue,
+          };
+          localWs.send(JSON.stringify(message));
+          itemValue[0] = itemValue[0] * 2;
+        }
+      }
     };
 
     localWs.onmessage = e => {
@@ -59,7 +84,7 @@ export const WebSocketProvider: React.FC<webSocketProps> = ({
     return () => {
       localWs.close();
     };
-  }, []);
+  }, [camera, formData.ip, formData.topic, nbPlayer]);
 
   return (
     <WebSocketContext.Provider value={[ws, setWs]}>

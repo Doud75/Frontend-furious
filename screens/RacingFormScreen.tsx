@@ -17,6 +17,7 @@ const RacingForm: React.FC<RacingFormScreenProps> = ({navigation}) => {
     const dataRace = await createRace();
     navigation.navigate('Racing', {
       raceId: dataRace.raceId,
+      tourCount,
     });
   };
 
