@@ -1,0 +1,21 @@
+{
+  "migIndex": 1,
+  "data": [
+    {
+      "path": "assets/fonts/Roboto-Regular.ttf",
+      "sha1": "56c5c0d38bde4c1f1549dda43db37b09c608aad3"
+    },
+    {
+      "path": "assets/fonts/Ruda-Bold.ttf",
+      "sha1": "cda8b2285a67b5abb8d8fd5ae30dc066ff08ffcd"
+    },
+    {
+      "path": "assets/fonts/Ruda-ExtraBold.ttf",
+      "sha1": "508d419f0917aa44a65a517ed4f2b5131c475684"
+    },
+    {
+      "path": "assets/fonts/Ruda-Regular.ttf",
+      "sha1": "edddd2d47fa8b99984316d4e30edbc6bbf3bd68c"
+    }
+  ]
+}

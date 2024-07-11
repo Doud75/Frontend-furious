@@ -11,6 +11,8 @@ import HomeScreen from '../screens/HomeScreen.tsx';
 import CustomScreen from '../screens/CustomScreen.tsx';
 import {RootStackParamList} from '../types/types.ts';
 import RaceList from '../screens/RaceList.tsx';
+import PlayerScreen from '../screens/PlayerScreen.tsx';
+import RefereeScreen from '../screens/RefereeScreen.tsx';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -18,9 +20,11 @@ export default function () {
   return (
     <Provider store={store}>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="Login">
+        <Stack.Navigator initialRouteName="Home">
           <Stack.Screen name="Login" component={LoginScreen} />
           <Stack.Screen name="Home" component={HomeScreen} />
+          <Stack.Screen name="Player" component={PlayerScreen} />
+          <Stack.Screen name="Referee" component={RefereeScreen} />
           <Stack.Screen name="FreeRace" component={ControlScreen} />
           <Stack.Screen name="RacingForm" component={RacingFormScreen} />
           <Stack.Screen name="Racing" component={RacingScreen} />

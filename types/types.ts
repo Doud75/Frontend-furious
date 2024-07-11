@@ -1,5 +1,7 @@
 export type RootStackParamList = {
   Home: undefined;
+  Player: undefined;
+  Referee: undefined;
   Login: undefined;
   FreeRace: {raceId: string};
   RacingForm: undefined;

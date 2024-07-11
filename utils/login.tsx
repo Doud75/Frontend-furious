@@ -5,6 +5,8 @@ import {useDispatch, useSelector} from 'react-redux';
 import {apiUrlBack} from '../config.json';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootStackParamList} from '../types/types.ts';
+import colors from '../assets/styles/colors.tsx';
+import ButtonPrimary from '../components/ButtonPrimary.tsx';
 
 interface StateProps {
   formData: FormDataProps;
@@ -25,8 +27,13 @@ const Login: React.FC<LoginProps> = ({navigation}) => {
   const dispatch = useDispatch();
   const formData = useSelector((state: StateProps) => state.formData);
   const [formState, setFormState] = useState<FormDataProps>(formData);
-  const [required, setRequired] = useState('');
-
+  const [required, setRequired] = useState(false);
+  const [loginResponse, setLoginResponse] = useState('');
+  
+  // const onPressButton = () => {
+  //   () => navigation.navigate('Custom')
+  // };
+  
   const handleChange = (name: string, value: string) => {
     setFormState({
       ...formState,
@@ -37,6 +44,13 @@ const Login: React.FC<LoginProps> = ({navigation}) => {
   const signIn = async () => {
     const username = formState.username;
     const ip = formState.ip;
+    const topic = formState.topic;
+    
+    
+    if(username == null || ip == null || topic == null){
+      setRequired(true)
+      return
+    }
     try {
       const response = await fetch(`${apiUrlBack}/signin`, {
         method: 'POST',
@@ -61,60 +75,68 @@ const Login: React.FC<LoginProps> = ({navigation}) => {
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
+    setRequired(false)
     if (!formState.username || !formState.ip || !formState.topic) {
-      let requiredString = 'Veuillez remplir tout les champs';
-      setRequired(requiredString);
+      setRequired(true)
       return;
     }
     const loginResponse = await signIn();
     formState.id = loginResponse.data.id;
     dispatch(setFormData(formState));
-    navigation.navigate('Home');
+    navigation.navigate('Player');
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.text}>{required}</Text>
+    <View>
+      {
+        required &&
+          <Text style={styles.requiredText}>
+            Veuillez remplir tout les champs
+          </Text>
+      }
       <TextInput
+        placeholderTextColor='grey'
         style={styles.input}
         placeholder="IP"
         value={formState.ip || ''}
         onChangeText={text => handleChange('ip', text)}
       />
       <TextInput
+        placeholderTextColor='grey'
         style={styles.input}
         placeholder="topic"
         value={formState.topic || ''}
         onChangeText={text => handleChange('topic', text)}
       />
       <TextInput
+        placeholderTextColor='grey'
         style={styles.input}
         placeholder="Username"
         value={formState.username || ''}
         onChangeText={text => handleChange('username', text)}
       />
+      {/* <ButtonPrimary
+        text="Se connecter"
+        onPress={handleSubmit} 
+        iconSource={require('../assets/images/icons/icon-lightning.png')}
+      /> */}
       <Button title="Submit" onPress={handleSubmit} />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    padding: 20,
-  },
   input: {
-    color: 'black',
+    color: colors.white,
     height: 40,
     borderColor: 'gray',
     borderWidth: 1,
     marginBottom: 10,
     paddingLeft: 8,
   },
-  text: {
+  requiredText: {
     color: 'red',
-    height: 40,
-    marginBottom: 10,
-    paddingLeft: 8,
+    marginBottom: 20,
   },
 });
 
