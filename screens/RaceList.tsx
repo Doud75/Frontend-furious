@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from 'react';
 import {
   FlatList,
   StyleSheet,
@@ -44,8 +44,9 @@ const RaceListScreen: React.FC<RaceListScreenProps> = ({navigation}) => {
       <FlatList
         data={races}
         keyExtractor={item => item.id}
-        renderItem={({item}) => (
+        renderItem={({ item }) => (
           <TouchableOpacity
+            key={item.id}
             onPress={() => {
               navigation.navigate('FreeRace', {
                 raceId: item.id,

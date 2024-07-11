@@ -2,7 +2,7 @@ import React, {useEffect} from 'react';
 import {View, StyleSheet} from 'react-native';
 import Joystick from '../utils/joystick.tsx';
 import Camera from '../utils/camera.tsx';
-import {WebSocketProvider} from '../context/WebSocketContext.tsx';
+import {useWebSocket, WebSocketProvider} from '../context/WebSocketContext.tsx';
 import Klaxon from '../utils/klaxonButton.tsx';
 import io from 'socket.io-client';
 import {socketUrl} from '../config.json';
@@ -14,12 +14,21 @@ import {apiUrlBack} from '../config.json';
 
 type ControlScreenRouteProp = RouteProp<RootStackParamList, 'FreeRace'>;
 const ControlScreen = () => {
+  return (
+    <WebSocketProvider camera={true}>
+      <_ControlScreen />
+    </WebSocketProvider>
+  );
+};
+
+const _ControlScreen = () => {
   const formData = useSelector((state: RootState) => state.formData);
   const route = useRoute<ControlScreenRouteProp>();
   const {raceId} = route.params;
+  const [ws] = useWebSocket();
   useEffect(() => {
     const socket = io(socketUrl);
-    console.log('socketUrl from Control', formData.name, socketUrl);
+    console.log('socketUrl from Control', formData.username, socketUrl);
 
     socket.emit('joinGroup', raceId);
 
@@ -41,7 +50,27 @@ const ControlScreen = () => {
           return response.json();
         })
         .then(data => {
-          console.log(data);
+          console.log('response from Control', data);
+          if (data.numberOfPlayer == 1) {
+            console.log('je suis dans le if');
+            if (ws && ws.readyState === WebSocket.OPEN) {
+              const message = {
+                cmd: 4,
+                data: 1,
+              };
+              ws.send(JSON.stringify(message));
+              let itemValue =
+                data.numberOfPlayer === '1' ? [1, 255, 0, 0] : [1, 0, 0, 255];
+              while (itemValue[0] <= 2048) {
+                const message = {
+                  cmd: 5,
+                  data: itemValue,
+                };
+                ws.send(JSON.stringify(message));
+                itemValue[0] = itemValue[0] * 2;
+              }
+            }
+          }
         })
         .catch(error => {
           console.error('Erreur :', error);
@@ -58,7 +87,7 @@ const ControlScreen = () => {
   }, [formData, raceId]);
 
   return (
-    <WebSocketProvider camera={true}>
+    <>
       <View style={styles.container}>
         <Joystick radius={100} innerRadius={80} />
         <Klaxon />
@@ -66,7 +95,7 @@ const ControlScreen = () => {
       <View style={styles.camera}>
         <Camera />
       </View>
-    </WebSocketProvider>
+    </>
   );
 };
 

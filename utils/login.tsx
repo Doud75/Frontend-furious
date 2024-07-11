@@ -14,7 +14,7 @@ interface FormDataProps {
   ip: string;
   topic: string;
   username: string;
-  id : number;
+  id: number;
 }
 
 type LoginProps = {
@@ -26,9 +26,7 @@ const Login: React.FC<LoginProps> = ({navigation}) => {
   const formData = useSelector((state: StateProps) => state.formData);
   const [formState, setFormState] = useState<FormDataProps>(formData);
   const [required, setRequired] = useState('');
-  const [loginResponse, setLoginResponse] = useState('');
-  
-  
+
   const handleChange = (name: string, value: string) => {
     setFormState({
       ...formState,
@@ -39,15 +37,6 @@ const Login: React.FC<LoginProps> = ({navigation}) => {
   const signIn = async () => {
     const username = formState.username;
     const ip = formState.ip;
-    const topic = formState.topic;
-    
-    
-    if(username == null || ip == null || topic == null){
-      let requiredString = "Veuillez remplir tout les champs"
-      setRequired(requiredString)
-      
-      return
-    }
     try {
       const response = await fetch(`${apiUrlBack}/signin`, {
         method: 'POST',
@@ -64,9 +53,7 @@ const Login: React.FC<LoginProps> = ({navigation}) => {
         throw new Error('Network response was not ok');
       }
 
-      setLoginResponse(await response.json())
-      dispatch(setFormData(loginResponse));
-      navigation.navigate('Home');      
+      return response.json();
     } catch (error) {
       console.log('Error submitting data:', error);
     }
@@ -74,14 +61,20 @@ const Login: React.FC<LoginProps> = ({navigation}) => {
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    await signIn();
+    if (!formState.username || !formState.ip || !formState.topic) {
+      let requiredString = 'Veuillez remplir tout les champs';
+      setRequired(requiredString);
+      return;
+    }
+    const loginResponse = await signIn();
+    formState.id = loginResponse.data.id;
+    dispatch(setFormData(formState));
+    navigation.navigate('Home');
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>
-        {required}
-      </Text>
+      <Text style={styles.text}>{required}</Text>
       <TextInput
         style={styles.input}
         placeholder="IP"
