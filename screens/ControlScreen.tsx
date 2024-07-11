@@ -11,6 +11,7 @@ import {useSelector} from 'react-redux';
 import {RootState} from '../reducer/store.tsx';
 import {apiUrlBack} from '../config.json';
 import { WebSocketProvider } from "../context/WebSocketContext.tsx";
+import colors from '../assets/styles/colors.tsx';
 
 type ControlScreenRouteProp = RouteProp<RootStackParamList, 'FreeRace'>;
 const ControlScreen = () => {
@@ -73,33 +74,47 @@ const ControlScreen = () => {
 
   return (
     <WebSocketProvider camera={true} nbPlayer={nbPlayer}>
-      <View style={styles.container}>
-        <Joystick radius={100} innerRadius={80} />
-        <Klaxon />
-      </View>
-      <View style={styles.camera}>
-        <Camera />
-      </View>
+        <View style={styles.joystick}>
+          <Joystick radius={60} innerRadius={45} />
+        </View>
+        <View style={styles.klaxon}>
+          <Klaxon />
+        </View>
+        <View style={styles.camera}>
+          <Camera />
+        </View>
     </WebSocketProvider>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
+  joystick: {
     zIndex: 2,
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'white',
+    width: 'auto',
+    backgroundColor: colors.black,
     position: 'absolute',
+    bottom: "10%",
+    left: "5%",
+  },
+  klaxon: {
+    zIndex: 2,
+    backgroundColor: 'yellow',
+    position: 'absolute',
+    bottom: "10%",
+    right: "5%",
+    width: '20%',
   },
   camera: {
     zIndex: 1,
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'white',
+    // flex: 1,
+    // justifyContent: 'center',
+    // alignItems: 'center',
+    // backgroundColor: 'white',
     position: 'absolute',
+    width: '100%',
+    backgroundColor:'red',
+    top: 0,
+    left: 0,
   },
 });
 

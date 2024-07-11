@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import {View, PanResponder, StyleSheet} from 'react-native';
 import {useWebSocket} from '../context/WebSocketContext';
+import colors from '../assets/styles/colors';
 
 interface JoystickProps {
   radius: number;
@@ -15,8 +16,8 @@ const Joystick: React.FC<JoystickProps> = ({radius, innerRadius}) => {
 
   const calculatePower = (x: number, y: number) => {
     const maxPower = 4095;
-    const normX = x / 20;
-    const normY = -y / 20;
+    const normX = x / 15;
+    const normY = -y / 15;
 
     let leftMotorPower = Math.round(maxPower * (normY + normX));
     let rightMotorPower = Math.round(maxPower * (normY - normX));
@@ -117,13 +118,15 @@ const Joystick: React.FC<JoystickProps> = ({radius, innerRadius}) => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: 'lightgrey',
+    backgroundColor: colors.greyTransparent,
+    borderColor: colors.greyLight,
+    borderWidth: 0.5,
     justifyContent: 'center',
     alignItems: 'center',
     position: 'relative',
   },
   innerCircle: {
-    backgroundColor: 'blue',
+    backgroundColor: colors.greyLight,
     position: 'absolute',
   },
 });
