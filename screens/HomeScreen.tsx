@@ -20,7 +20,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
         </Text>
       </View>
       <View style={styles.boxContainer}>
-        <Card 
+        <Card
             style={styles.card}
             navigationScreen={{
               screenName: 'Login',
@@ -30,10 +30,10 @@ const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
             text2='piloter la voiture'
             imageSource={require('../assets/images/piloter.png')}
         />
-        <Card 
+        <Card
             style={styles.card}
             navigationScreen={{
-              screenName: 'Referee',
+              screenName: 'RacingForm',
             }}
             navigation={navigation}
             text1='je souhaite'

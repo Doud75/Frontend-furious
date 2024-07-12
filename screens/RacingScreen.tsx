@@ -29,6 +29,7 @@ const Racing: React.FC = () => {
   const [winner, setWinner] = useState('');
   const socketRef = useRef<any>(null);
   const [nbOfTour, setNbOfTour] = useState<number[]>([]);
+  const [raceStartTime, setRaceStartTime] = useState(Date.now);
 
   useEffect(() => {
     const socket = io(socketUrl);
@@ -52,7 +53,7 @@ const Racing: React.FC = () => {
     return () => {
       console.log('return from referee');
       const cleanUp = async () => {
-        const response = await closeRace(raceId, '');
+        const response = await closeRace(raceId);
         console.log('close race from referee', response);
         socket.disconnect();
       };
@@ -61,12 +62,19 @@ const Racing: React.FC = () => {
   }, [raceId]);
 
   const incrementTour = (index: number, userName: string) => {
-    setNbOfTour(prevTours => {
-      const updatedTours = [...prevTours];
-      updatedTours[index] += 1;
-      return updatedTours;
-    });
-    if (nbOfTour[index] === Number(tourCount) && winner !== '') {
+    console.log('inIncrement');
+    if (nbOfTour[index] + 1 <= Number(tourCount)) {
+      setNbOfTour(prevTours => {
+        const updatedTours = [...prevTours];
+        updatedTours[index] += 1;
+        return updatedTours;
+      });
+    }
+    console.log('nbOfTour', nbOfTour[index] + 1);
+    console.log('tourCount', tourCount);
+    console.log('winner', winner);
+    if (nbOfTour[index] + 1 === Number(tourCount) && winner === '') {
+      console.log('shouldSetWinner', userName);
       setWinner(userName);
     }
   };
@@ -102,6 +110,7 @@ const Racing: React.FC = () => {
         <Button
           onPress={() => {
             setStartRace(true);
+            setRaceStartTime(Date.now);
           }}
           title="start race"
           color="#841584"
@@ -110,7 +119,7 @@ const Racing: React.FC = () => {
       {startRace && (
         <Button
           onPress={async () => {
-            await closeRace(raceId, winner);
+            await stopRace(raceId, winner, raceStartTime);
             setStartRace(false);
           }}
           title="stop race"
@@ -121,7 +130,8 @@ const Racing: React.FC = () => {
   );
 };
 
-async function closeRace(raceId: string, winner: string) {
+async function closeRace(raceId: string) {
+  console.log('from close race : ', raceId);
   const response = await fetch(`${apiUrlBack}/close-race`, {
     method: 'POST',
     headers: {
@@ -129,7 +139,26 @@ async function closeRace(raceId: string, winner: string) {
     },
     body: JSON.stringify({
       raceId,
+    }),
+  });
+  if (!response.ok) {
+    throw new Error(`Reponse HTTP : ${response.status}`);
+  }
+  return response.json();
+}
+
+async function stopRace(raceId: string, winner: string, raceStartTime: number) {
+  console.log('from stop race : ', winner);
+  const raceDuration = Date.now() - raceStartTime;
+  const response = await fetch(`${apiUrlBack}/stop-race`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      raceId,
       winner,
+      raceDuration,
     }),
   });
   if (!response.ok) {
