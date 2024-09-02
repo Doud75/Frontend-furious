@@ -8,4 +8,5 @@ export type RootStackParamList = {
   Racing: {raceId: string; tourCount: string};
   Custom: undefined;
   RaceList: undefined;
+  TrackRace: undefined;
 };

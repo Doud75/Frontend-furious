@@ -77,7 +77,7 @@ const ControlScreen = () => {
   }, [formData, raceId]);
 
   return (
-    <WebSocketProvider camera={true} nbPlayer={nbPlayer}>
+    <WebSocketProvider camera={true} track={false} nbPlayer={nbPlayer}>
       <View style={styles.joystick}>
         <Joystick radius={60} innerRadius={45} />
       </View>

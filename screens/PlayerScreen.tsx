@@ -49,9 +49,9 @@ const PlayerScreen: React.FC<PlayerScreenProps> = ({navigation}) => {
         />
         <Card
           style={styles.card}
-          // navigationScreen={{
-          //   screenName: 'RaceList',
-          // }}
+          navigationScreen={{
+            screenName: 'TrackRace',
+          }}
           navigation={navigation}
           text1="mode"
           text2="automatique"

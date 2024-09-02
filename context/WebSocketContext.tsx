@@ -17,12 +17,14 @@ const WebSocketContext = createContext<
 interface webSocketProps {
   children: ReactNode;
   camera: boolean;
+  track: boolean;
   nbPlayer: string;
 }
 
 export const WebSocketProvider: React.FC<webSocketProps> = ({
   children,
   camera = false,
+  track = false,
   nbPlayer = '',
 }) => {
   const [ws, setWs] = useState<WebSocket>();
@@ -43,6 +45,14 @@ export const WebSocketProvider: React.FC<webSocketProps> = ({
         };
         localWs.send(JSON.stringify(message));
         console.log('camera on');
+      }
+      if (track) {
+        const message = {
+          cmd: 10,
+          data: 1,
+        };
+        localWs.send(JSON.stringify(message));
+        console.log('track on');
       }
       if (nbPlayer !== '') {
         const message = {
@@ -91,7 +101,7 @@ export const WebSocketProvider: React.FC<webSocketProps> = ({
       console.log('led off');*/
       localWs.close();
     };
-  }, [camera, formData.ip, formData.topic, nbPlayer]);
+  }, [camera, formData.ip, formData.topic, nbPlayer, track]);
 
   return (
     <WebSocketContext.Provider value={[ws, setWs]}>
