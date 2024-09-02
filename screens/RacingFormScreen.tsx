@@ -3,6 +3,7 @@ import {View, TextInput, Button, StyleSheet, Text} from 'react-native';
 import {RootStackParamList} from '../types/types.ts';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {apiUrlBack} from '../config.json';
+import {postFetch} from '../helpers/fetch';
 
 type RacingFormScreenProps = NativeStackScreenProps<
   RootStackParamList,
@@ -23,7 +24,11 @@ const RacingForm: React.FC<RacingFormScreenProps> = ({navigation}) => {
 
   async function createRace() {
     if (raceName) {
-      const response = await fetch(`${apiUrlBack}/create-race`, {
+      return await postFetch(`${apiUrlBack}/create-race`, {
+        raceName,
+        tourCount,
+      });
+      /*const response = await fetch(`${apiUrlBack}/create-race`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -38,7 +43,7 @@ const RacingForm: React.FC<RacingFormScreenProps> = ({navigation}) => {
         throw new Error(`Reponse HTTP : ${response.status}`);
       }
 
-      return response.json();
+      return response.json();*/
     } else {
       setError('Veuillez spécifier un nom de course.');
     }

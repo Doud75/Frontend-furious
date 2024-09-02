@@ -1,12 +1,12 @@
 import React from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity, ViewStyle, Button } from 'react-native';
+import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
 import globalStyles from '../assets/styles/globalStyles';
 import colors from '../assets/styles/colors';
 
 interface ButtonPrimaryProps {
   navigationScreen?: {
-    screenName: string; 
-    params?: object; 
+    screenName: string;
+    params?: object;
   };
   navigation?: any;
   text: string;
@@ -14,27 +14,24 @@ interface ButtonPrimaryProps {
   onPress: any;
 }
 
-const ButtonPrimary: React.FC<ButtonPrimaryProps> = ({ text, iconSource, navigationScreen, navigation, onPress }) => {
+const ButtonPrimary: React.FC<ButtonPrimaryProps> = ({
+  text,
+  iconSource,
+  onPress,
+}) => {
   const handleSubmit = () => {
-    onPress
-    console.log(('handleSubmit button comp'));
-    
+    onPress;
+    console.log('handleSubmit button comp');
+
   };
-  
+
   return (
     <TouchableOpacity style={styles.container} onPress={handleSubmit}>
       <View style={[styles.button]}>
-        <Text style={[globalStyles.paragraph, styles.text]}>
-            {text}
-        </Text>
-        { 
-          iconSource &&
-            <Image
-                source={iconSource}
-                style={styles.icon}
-                resizeMode="contain"
-            />
-        }
+        <Text style={[globalStyles.paragraph, styles.text]}>{text}</Text>
+        {iconSource && (
+          <Image source={iconSource} style={styles.icon} resizeMode="contain" />
+        )}
       </View>
     </TouchableOpacity>
   );
@@ -42,7 +39,7 @@ const ButtonPrimary: React.FC<ButtonPrimaryProps> = ({ text, iconSource, navigat
 
 const styles = StyleSheet.create({
   container: {
-    justifyContent: 'center', 
+    justifyContent: 'center',
     alignItems: 'center',
   },
   button: {
@@ -62,7 +59,7 @@ const styles = StyleSheet.create({
   icon: {
     height: 23,
     marginLeft: 8,
-  }
+  },
 });
 
 export default ButtonPrimary;

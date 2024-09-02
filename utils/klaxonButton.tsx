@@ -1,5 +1,5 @@
-import React, {useEffect, useRef} from 'react';
-import {TouchableOpacity, Text, StyleSheet, Alert} from 'react-native';
+import React from 'react';
+import {TouchableOpacity, Text, StyleSheet} from 'react-native';
 import {useWebSocket} from '../context/WebSocketContext.tsx';
 
 const KlaxonButton = () => {

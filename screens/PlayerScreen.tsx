@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text, Button, StyleSheet, Image, TouchableOpacity} from 'react-native';
+import {View, Text, Button, StyleSheet} from 'react-native';
 import {RootStackParamList} from '../types/types.ts';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import globalStyles from '../assets/styles/globalStyles';
@@ -9,7 +9,7 @@ type PlayerScreenProps = NativeStackScreenProps<RootStackParamList, 'Player'>;
 
 const PlayerScreen: React.FC<PlayerScreenProps> = ({navigation}) => {
   const onPressButton = () => {
-    () => navigation.navigate('Custom')
+    () => navigation.navigate('Custom');
   };
 
   return (
@@ -19,49 +19,47 @@ const PlayerScreen: React.FC<PlayerScreenProps> = ({navigation}) => {
           Modes de conduite
         </Text>
         <Text style={globalStyles.paragraph}>
-          Choisis ton mode de conduite et bla bla bla blabuucdl jkuklszb fzviafjioef zefkgufzlfzie faugaofgie
+          Choisis ton mode de conduite et bla bla bla blabuucdl jkuklszb
+          fzviafjioef zefkgufzlfzie faugaofgie
         </Text>
       </View>
       <View style={styles.cardContainer}>
-        <Card 
+        <Card
           style={styles.card}
           navigationScreen={{
             screenName: 'FreeRace',
             params: {
               raceId: '',
-            }
+            },
           }}
           navigation={navigation}
-          text1='mode'
-          text2='libre'
+          text1="mode"
+          text2="libre"
           imageSource={require('../assets/images/mode-libre.png')}
         />
-        <Card 
+        <Card
           style={styles.card}
           navigationScreen={{
             screenName: 'RaceList',
           }}
           navigation={navigation}
-          text1='mode'
-          text2='course'
+          text1="mode"
+          text2="course"
           imageSource={require('../assets/images/mode-course.png')}
         />
-        <Card 
+        <Card
           style={styles.card}
           // navigationScreen={{
           //   screenName: 'RaceList',
           // }}
           navigation={navigation}
-          text1='mode'
-          text2='automatique'
+          text1="mode"
+          text2="automatique"
           imageSource={require('../assets/images/mode-auto.png')}
         />
       </View>
 
-      <Button
-        title="Personnalisation"
-        onPress={onPressButton}
-      />
+      <Button title="Personnalisation" onPress={onPressButton} />
     </View>
   );
 };

@@ -82,6 +82,13 @@ export const WebSocketProvider: React.FC<webSocketProps> = ({
     };
 
     return () => {
+      /*console.log('websocket to vroum closed');
+      const message = {
+        cmd: 4,
+        data: 0,
+      };
+      localWs.send(JSON.stringify(message));
+      console.log('led off');*/
       localWs.close();
     };
   }, [camera, formData.ip, formData.topic, nbPlayer]);

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from 'react';
 import {View, StyleSheet} from 'react-native';
 import Joystick from '../utils/joystick.tsx';
 import Camera from '../utils/camera.tsx';
@@ -10,8 +10,9 @@ import {RootStackParamList} from '../types/types.ts';
 import {useSelector} from 'react-redux';
 import {RootState} from '../reducer/store.tsx';
 import {apiUrlBack} from '../config.json';
-import { WebSocketProvider } from "../context/WebSocketContext.tsx";
+import {WebSocketProvider} from '../context/WebSocketContext.tsx';
 import colors from '../assets/styles/colors.tsx';
+import {postFetch} from '../helpers/fetch.js';
 
 type ControlScreenRouteProp = RouteProp<RootStackParamList, 'FreeRace'>;
 const ControlScreen = () => {
@@ -25,7 +26,7 @@ const ControlScreen = () => {
       const socket = io(socketUrl);
       console.log('socketUrl from Control', formData.username, socketUrl);
       socket.emit('joinGroup', raceId);
-      fetch(`${apiUrlBack}/join-race`, {
+      /*fetch(`${apiUrlBack}/join-race`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -34,20 +35,23 @@ const ControlScreen = () => {
           raceId,
           formData,
         }),
+      }).then(response => {
+        if (!response.ok) {
+          throw new Error(`Réponse HTTP : ${response.status}`);
+        }
+        return response.json();
+      });*/
+      postFetch(`${apiUrlBack}/join-race`, {
+        raceId,
+        formData,
       })
-        .then(response => {
-          if (!response.ok) {
-            throw new Error(`Réponse HTTP : ${response.status}`);
-          }
-          return response.json();
-        })
-        .then(data => {
+        .then((data: {numberOfPlayer: React.SetStateAction<string>}) => {
           console.log('response from Control', data);
           if (data.numberOfPlayer) {
             setnbPlayer(data.numberOfPlayer);
           }
         })
-        .catch(error => {
+        .catch((error: any) => {
           console.error('Erreur :', error);
         });
 
@@ -74,15 +78,15 @@ const ControlScreen = () => {
 
   return (
     <WebSocketProvider camera={true} nbPlayer={nbPlayer}>
-        <View style={styles.joystick}>
-          <Joystick radius={60} innerRadius={45} />
-        </View>
-        <View style={styles.klaxon}>
-          <Klaxon />
-        </View>
-        <View style={styles.camera}>
-          <Camera />
-        </View>
+      <View style={styles.joystick}>
+        <Joystick radius={60} innerRadius={45} />
+      </View>
+      <View style={styles.klaxon}>
+        <Klaxon />
+      </View>
+      <View style={styles.camera}>
+        <Camera />
+      </View>
     </WebSocketProvider>
   );
 };
@@ -93,15 +97,15 @@ const styles = StyleSheet.create({
     width: 'auto',
     backgroundColor: colors.black,
     position: 'absolute',
-    bottom: "10%",
-    left: "5%",
+    bottom: '10%',
+    left: '5%',
   },
   klaxon: {
     zIndex: 2,
     backgroundColor: 'yellow',
     position: 'absolute',
-    bottom: "10%",
-    right: "5%",
+    bottom: '10%',
+    right: '5%',
     width: '20%',
   },
   camera: {
@@ -112,7 +116,7 @@ const styles = StyleSheet.create({
     // backgroundColor: 'white',
     position: 'absolute',
     width: '100%',
-    backgroundColor:'red',
+    backgroundColor: 'red',
     top: 0,
     left: 0,
   },

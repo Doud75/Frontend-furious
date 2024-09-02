@@ -11,6 +11,7 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootStackParamList} from '../types/types.ts';
 import {apiUrlBack} from '../config.json';
 import {useIsFocused} from '@react-navigation/native';
+import {getFetch} from '../helpers/fetch';
 
 type RaceListScreenProps = NativeStackScreenProps<
   RootStackParamList,
@@ -25,13 +26,14 @@ const RaceListScreen: React.FC<RaceListScreenProps> = ({navigation}) => {
   const [races, setRace] = useState<Race[]>([]);
   const isFocused = useIsFocused();
   useEffect(() => {
-    fetch(`${apiUrlBack}/race`)
+    /*fetch(`${apiUrlBack}/race`)
       .then(response => {
         if (!response.ok) {
           throw new Error(`Réponse HTTP : ${response.status}`);
         }
         return response.json();
-      })
+      })*/
+    getFetch(`${apiUrlBack}/race`)
       .then(data => {
         setRace(data);
       })
@@ -44,7 +46,7 @@ const RaceListScreen: React.FC<RaceListScreenProps> = ({navigation}) => {
       <FlatList
         data={races}
         keyExtractor={item => item.id}
-        renderItem={({ item }) => (
+        renderItem={({item}) => (
           <TouchableOpacity
             key={item.id}
             onPress={() => {

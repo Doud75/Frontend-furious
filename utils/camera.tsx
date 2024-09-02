@@ -1,16 +1,15 @@
-import React, { useEffect } from "react";
+import React from 'react';
 import {Dimensions} from 'react-native';
 import WebView from 'react-native-webview';
-import {useWebSocket} from '../context/WebSocketContext.tsx';
-import {useSelector} from "react-redux";
-import {RootState} from "../reducer/store.tsx";
+import {useSelector} from 'react-redux';
+import {RootState} from '../reducer/store.tsx';
 
 const {width, height} = Dimensions.get('window');
 
 const Camera: React.FC = () => {
-    const formData = useSelector((state: RootState) => state.formData);
+  const formData = useSelector((state: RootState) => state.formData);
 
-    return (
+  return (
     <WebView
       scalesPageToFit={true}
       bounces={false}

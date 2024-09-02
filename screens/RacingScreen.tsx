@@ -11,6 +11,7 @@ import io from 'socket.io-client';
 import {RouteProp, useRoute} from '@react-navigation/native';
 import {RootStackParamList} from '../types/types.ts';
 import {socketUrl, apiUrlBack} from '../config.json';
+import {postFetch} from '../helpers/fetch';
 
 type RacingScreenRouteProp = RouteProp<RootStackParamList, 'Racing'>;
 
@@ -132,7 +133,8 @@ const Racing: React.FC = () => {
 
 async function closeRace(raceId: string) {
   console.log('from close race : ', raceId);
-  const response = await fetch(`${apiUrlBack}/close-race`, {
+  return await postFetch(`${apiUrlBack}/close-race`, {raceId});
+  /*const response = await fetch(`${apiUrlBack}/close-race`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -144,13 +146,18 @@ async function closeRace(raceId: string) {
   if (!response.ok) {
     throw new Error(`Reponse HTTP : ${response.status}`);
   }
-  return response.json();
+  return response.json();*/
 }
 
 async function stopRace(raceId: string, winner: string, raceStartTime: number) {
   console.log('from stop race : ', winner);
   const raceDuration = Date.now() - raceStartTime;
-  const response = await fetch(`${apiUrlBack}/stop-race`, {
+  return await postFetch(`${apiUrlBack}/stop-race`, {
+    raceId,
+    winner,
+    raceDuration,
+  });
+  /*const response = await fetch(`${apiUrlBack}/stop-race`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -164,7 +171,7 @@ async function stopRace(raceId: string, winner: string, raceStartTime: number) {
   if (!response.ok) {
     throw new Error(`Reponse HTTP : ${response.status}`);
   }
-  return response.json();
+  return response.json();*/
 }
 
 const styles = StyleSheet.create({
