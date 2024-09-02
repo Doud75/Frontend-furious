@@ -47,33 +47,33 @@ export const WebSocketProvider: React.FC<webSocketProps> = ({
         console.log('camera on');
       }
       if (track) {
-        const message = {
+        const message2 = {
           cmd: 10,
           data: 1,
         };
-        localWs.send(JSON.stringify(message));
+        localWs.send(JSON.stringify(message2));
         console.log('track on');
       }
       if (nbPlayer !== '') {
-        const message = {
+        const message3 = {
           cmd: 4,
           data: 0,
         };
-        localWs.send(JSON.stringify(message));
+        localWs.send(JSON.stringify(message3));
         console.log('led off');
-        const message2 = {
+        const message4 = {
           cmd: 4,
           data: 1,
         };
-        localWs.send(JSON.stringify(message2));
+        localWs.send(JSON.stringify(message4));
         console.log('led ready');
         let itemValue = nbPlayer === '1' ? [1, 255, 0, 0] : [1, 0, 0, 255];
         while (itemValue[0] <= 2048) {
-          const message = {
+          const message5 = {
             cmd: 5,
             data: itemValue,
           };
-          localWs.send(JSON.stringify(message));
+          localWs.send(JSON.stringify(message5));
           itemValue[0] = itemValue[0] * 2;
         }
       }
@@ -92,13 +92,7 @@ export const WebSocketProvider: React.FC<webSocketProps> = ({
     };
 
     return () => {
-      /*console.log('websocket to vroum closed');
-      const message = {
-        cmd: 4,
-        data: 0,
-      };
-      localWs.send(JSON.stringify(message));
-      console.log('led off');*/
+      stopCamAndTrack(localWs);
       localWs.close();
     };
   }, [camera, formData.ip, formData.topic, nbPlayer, track]);
@@ -109,6 +103,21 @@ export const WebSocketProvider: React.FC<webSocketProps> = ({
     </WebSocketContext.Provider>
   );
 };
+
+function stopCamAndTrack(localWs: WebSocket) {
+  const message = {
+    cmd: 9,
+    data: 0,
+  };
+  localWs.send(JSON.stringify(message));
+  console.log('camera on');
+  const message2 = {
+    cmd: 10,
+    data: 0,
+  };
+  localWs.send(JSON.stringify(message2));
+  console.log('track on');
+}
 
 export const useWebSocket = () => {
   const context = React.useContext(WebSocketContext);
