@@ -1,29 +1,17 @@
+// ColorPicker.tsx
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import {useWebSocket} from "../context/WebSocketContext.tsx";
+import {View} from 'react-native';
+import ColorChoice from "../utils/colorChoice.tsx";
+import {WebSocketProvider} from "../context/WebSocketContext.tsx";
 
-const Custom = () => {
-    const [ws] = useWebSocket();
+const CustomScreen: React.FC = () => {
+    return (
+        <WebSocketProvider camera={true} track={false} nbPlayer={"0"}>
+            <View>
+                <ColorChoice/>
+            </View>
+        </WebSocketProvider>
+    );
+};
 
-    const Color = () => {
-        
-    }
-    
-    return(
-        <View style={styles.container}>
-            <Text></Text>
-        </View>
-    )
-}
-
-const styles = StyleSheet.create({
-    container: {
-        color: 'black',
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: 'white',
-    },
-});
-
-export default Custom;
+export default CustomScreen;
