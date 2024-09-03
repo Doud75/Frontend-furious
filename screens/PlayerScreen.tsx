@@ -1,11 +1,15 @@
 import React from 'react';
-import {View, Text, Button, StyleSheet} from 'react-native';
+import {View, Text, StyleSheet, Image, Pressable, Dimensions} from 'react-native';
 import {RootStackParamList} from '../types/types.ts';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import globalStyles from '../assets/styles/globalStyles';
 import Card from '../components/Card.tsx';
+import colors from '../assets/styles/colors.tsx';
 
 type PlayerScreenProps = NativeStackScreenProps<RootStackParamList, 'Player'>;
+
+const { height: screenHeight } = Dimensions.get('window');
+const cardHeight = screenHeight * 0.37;
 
 const PlayerScreen: React.FC<PlayerScreenProps> = ({navigation}) => {
   const onPressButton = () => {
@@ -13,7 +17,7 @@ const PlayerScreen: React.FC<PlayerScreenProps> = ({navigation}) => {
   };
 
   return (
-    <View style={globalStyles.background}>
+    <View style={[globalStyles.background, styles.page]}>
       <View style={styles.textContainer}>
         <Text style={[globalStyles.title1, styles.title1]}>
           Modes de conduite
@@ -59,12 +63,24 @@ const PlayerScreen: React.FC<PlayerScreenProps> = ({navigation}) => {
         />
       </View>
 
-      <Button title="Personnalisation" onPress={onPressButton} />
+      <Pressable
+          onPress={onPressButton}   
+          style={styles.buttonIcon}
+      >
+        <Image
+          source={require('../assets/images/icons/icon-settings.png')}
+          style={styles.buttonIconImage}
+          resizeMode="contain"
+        />
+      </Pressable>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  page: {
+    position: 'relative',
+  },
   textContainer: {
     marginBottom: 32,
   },
@@ -80,7 +96,29 @@ const styles = StyleSheet.create({
   card: {
     maxWidth: 194,
     flex: 1,
+    height: cardHeight,
   },
+  buttonIcon: {
+    width: 50,
+    height: 50,
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    borderColor: colors.primary,
+    padding: 10,
+    borderRadius: 90,
+    borderWidth: 1,
+    backgroundColor: colors.grey,
+    shadowColor: '#576FEF', 
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.2,
+    shadowRadius: 19,  
+  },
+  buttonIconImage: {
+    width: '100%',
+    height: '100%',
+    objectFit: 'contain',
+  }
 });
 
 export default PlayerScreen;
