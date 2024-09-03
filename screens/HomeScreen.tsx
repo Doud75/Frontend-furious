@@ -23,7 +23,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
         <Card
           style={styles.card}
           navigationScreen={{
-            screenName: 'Login',
+              screenName: 'Login',
           }}
           navigation={navigation}
           text1="je souhaite"

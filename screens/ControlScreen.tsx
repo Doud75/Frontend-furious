@@ -102,11 +102,12 @@ const styles = StyleSheet.create({
   },
   klaxon: {
     zIndex: 2,
-    backgroundColor: 'yellow',
+    backgroundColor: colors.black,
     position: 'absolute',
     bottom: '10%',
     right: '5%',
-    width: '20%',
+    width: 70,
+    height: 70,
   },
   camera: {
     zIndex: 1,
