@@ -14,6 +14,7 @@ import RaceList from '../screens/RaceList.tsx';
 import PlayerScreen from '../screens/PlayerScreen.tsx';
 import RefereeScreen from '../screens/RefereeScreen.tsx';
 import TrackRaceScreen from '../screens/TrackRaceScreen.tsx';
+import StatisticsScreen from '../screens/StatisticsScreen.tsx';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -32,6 +33,7 @@ export default function () {
           <Stack.Screen name="Custom" component={CustomScreen} />
           <Stack.Screen name="RaceList" component={RaceList} />
           <Stack.Screen name="TrackRace" component={TrackRaceScreen} />
+          <Stack.Screen name="Statistics" component={StatisticsScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>

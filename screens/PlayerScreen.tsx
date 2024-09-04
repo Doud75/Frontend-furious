@@ -5,6 +5,7 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import globalStyles from '../assets/styles/globalStyles';
 import Card from '../components/Card.tsx';
 import colors from '../assets/styles/colors.tsx';
+import ButtonIcon from '../components/buttons/ButtonIcon.tsx';
 
 type PlayerScreenProps = NativeStackScreenProps<RootStackParamList, 'Player'>;
 
@@ -62,17 +63,11 @@ const PlayerScreen: React.FC<PlayerScreenProps> = ({navigation}) => {
           imageSource={require('../assets/images/mode-auto.png')}
         />
       </View>
-
-      <Pressable
-          onPress={onPressButton}   
-          style={styles.buttonIcon}
-      >
-        <Image
-          source={require('../assets/images/icons/icon-settings.png')}
-          style={styles.buttonIconImage}
-          resizeMode="contain"
-        />
-      </Pressable>
+      <ButtonIcon 
+        iconSource={require('../assets/images/icons/icon-settings.png')}
+        link={"Statistics"}
+        style={styles.buttonIcon}
+      />
     </View>
   );
 };
@@ -99,26 +94,10 @@ const styles = StyleSheet.create({
     height: cardHeight,
   },
   buttonIcon: {
-    width: 50,
-    height: 50,
     position: 'absolute',
-    top: 0,
-    right: 0,
-    borderColor: colors.primary,
-    padding: 10,
-    borderRadius: 90,
-    borderWidth: 1,
-    backgroundColor: colors.grey,
-    shadowColor: '#576FEF', 
-    shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 0.2,
-    shadowRadius: 19,  
+    top: 20,
+    right: 20,
   },
-  buttonIconImage: {
-    width: '100%',
-    height: '100%',
-    objectFit: 'contain',
-  }
 });
 
 export default PlayerScreen;

@@ -4,6 +4,7 @@ import {RootStackParamList} from '../types/types.ts';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import globalStyles from '../assets/styles/globalStyles';
 import Card from '../components/Card.tsx';
+import ButtonIcon from '../components/buttons/ButtonIcon.tsx';
 
 type HomeScreenProps = NativeStackScreenProps<RootStackParamList, 'Home'>;
 
@@ -41,6 +42,12 @@ const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
           imageSource={require('../assets/images/arbitre.png')}
         />
       </View>
+      <ButtonIcon 
+        iconSource={require('../assets/images/icons/icon-statistic.png')}
+        link={"Statistics"}
+        style={styles.buttonIcon}
+        navigation={navigation}
+      />
     </View>
   );
 };
@@ -60,6 +67,11 @@ const styles = StyleSheet.create({
   },
   card: {
     width: '48%',
+  },
+  buttonIcon: {
+    position: 'absolute',
+    top: 20,
+    right: 20,
   },
 });
 
