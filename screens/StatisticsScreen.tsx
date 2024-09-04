@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import {RootStackParamList} from '../types/types.ts';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
@@ -7,23 +7,66 @@ import colors from '../assets/styles/colors.tsx';
 import UserStatistics from '../components/statistics/UserStatistics.tsx';
 import GeneralStatistics from '../components/statistics/GeneralStatistics.tsx';
 import BackButton from '../components/BackButton.tsx';
+import { getFetch } from '../helpers/fetch.js';
+import {apiUrlBack} from '../config.json';
+import { useSelector } from 'react-redux';
+import { RootState } from '../reducer/store.tsx';
+
 
 type StatisticsScreenProps = NativeStackScreenProps<
   RootStackParamList,
   'Statistics'
 >;
 
+interface Stats{
+  player: {
+    username: string,
+    nbrace: string,
+    nbvictory: string,
+    avgduration: string,
+    avgdurationpertour: string,
+  },
+  statsGeneral:{
+    username: string,
+    nbrace: string,
+    nbvictory: string,
+    avgduration: string,
+  }[]
+}
+
+const initStats = {
+  player: {
+    username: '',
+    nbrace: '',
+    nbvictory: '',
+    avgduration: '',
+    avgdurationpertour: '',
+  },
+  statsGeneral: [],
+}
+
 const StatisticsScreen: React.FC<StatisticsScreenProps> = () => {
   const [tab, setTab] = useState('perso');
+  const [stats, setStats] = useState<Stats>(initStats);
+
   const handleTab = (tab: string) => {
     setTab(tab);
   };
-  const statsPerso = {
-    nbCourses: 7,
-    nbVictoires: 7,
-    raceDuration: 7685,
-    tourDuration: 976,
-  };
+
+  const formData = useSelector((state: RootState) => state.formData);
+  const playerId = formData.id
+  const playerUsername = formData.username
+
+  useEffect(() => {
+    getFetch(`${apiUrlBack}/get-stats/${playerId}`)
+      .then(data => {
+        setStats(data);
+        console.log({data});
+      })
+      .catch(error => {
+        console.error('Erreur :', error);
+    });
+  }, [])
 
   return (
     <View style={[globalStyles.background, styles.page]}>
@@ -50,9 +93,9 @@ const StatisticsScreen: React.FC<StatisticsScreenProps> = () => {
         </TouchableOpacity>
       </View>
 
-      {tab === 'perso' && <UserStatistics data={statsPerso} />}
+      {tab === 'perso' && <UserStatistics data={stats.player} username={playerUsername} />}
 
-      {tab === 'general' && <GeneralStatistics data={{}} />}
+      {tab === 'general' && <GeneralStatistics data={stats.statsGeneral} />}
     </View>
   );
 };
@@ -62,7 +105,7 @@ const styles = StyleSheet.create({
     position: 'relative',
   },
   tabs: {
-    padding: 8,
+    padding: 6,
     borderRadius: 90,
     borderWidth: 1,
     borderColor: colors.primary,
@@ -72,7 +115,7 @@ const styles = StyleSheet.create({
   },
   tabButton: {
     paddingHorizontal: 24,
-    paddingVertical: 12,
+    paddingVertical: 8,
     borderRadius: 90,
     backgroundColor: colors.background,
   },

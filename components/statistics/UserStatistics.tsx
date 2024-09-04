@@ -4,35 +4,43 @@ import globalStyles from '../../assets/styles/globalStyles';
 import colors from '../../assets/styles/colors';
 
 interface UserStatisticsProps {
-  data: any;
+  data: {
+    username: string,
+    nbrace: string,
+    nbvictory: string,
+    avgduration: string,
+    avgdurationpertour: string,
+  },
+  username: string
 }
 
-const UserStatistics: React.FC<UserStatisticsProps> = ({data}) => {
+const UserStatistics: React.FC<UserStatisticsProps> = ({data, username}) => {
   const rowsStats = [
     {
       label: 'Courses',
-      value: data.nbCourses,
+      value: data.nbrace,
     },
     {
       label: 'Victoires',
-      value: data.nbVictoires,
+      value: data.nbvictory,
     },
     {
       label: 'Durée moyenne d’une course',
-      value: data.raceDuration,
+      value: data.avgduration || "0",
     },
     {
       label: 'Durée moyenne d’un tour',
-      value: data.tourDuration,
+      value: data.avgdurationpertour || "0",
     },
   ];
+  
   return (
     <ScrollView
       style={styles.statPersoContainer}
       bounces={false}
       showsVerticalScrollIndicator={false}>
       <Text style={[globalStyles.title4, styles.statPersoTitle]}>
-        Nom du joueur
+        {username}
       </Text>
 
       <View>

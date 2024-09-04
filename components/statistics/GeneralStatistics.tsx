@@ -4,57 +4,73 @@ import globalStyles from '../../assets/styles/globalStyles';
 import colors from '../../assets/styles/colors';
 
 interface GeneralStatisticsProps {
-  data: any;
+  data: {
+    username: string,
+    nbrace: string,
+    nbvictory: string,
+    avgduration: string,
+  }[];
 }
 
+interface Stat {
+  stat: {
+    username: string;
+    nbrace: string;
+    nbvictory: string;
+    avgduration: string;
+  }
+}
+
+interface StatRowProps {
+  label: string;
+  value: string;
+}
+
+const StatRow = ({ label, value }: StatRowProps) => (
+  <View style={styles.statGeneralItemRow}>
+    <Text style={[globalStyles.paragraph14, styles.statGeneralItemLabel]}>
+      {label}
+    </Text>
+    <Text style={[globalStyles.paragraph14, styles.statGeneralItemValue]}>
+      {value}
+    </Text>
+  </View>
+);
+
+
+const StatGeneralItem = ({ stat }: Stat) => {
+ const getAverageDuration = (durationInMs: string) => {
+    const duration = parseInt(durationInMs, 10);
+    const minutes = Math.floor(duration / 60000);
+    const seconds = Math.floor((duration % 60000) / 1000);
+    const formattedDuration = `${minutes}'${seconds < 10 ? '0' : ''}${seconds}''`;
+
+    return formattedDuration;
+  }  
+
+  return (
+    <View style={styles.statGeneralItem}>
+      <Text style={[globalStyles.paragraph18, styles.statGeneralName]}>
+        {stat.username}
+      </Text>
+      <View style={styles.statGeneralItemText}>
+        <StatRow 
+          label="Courses" 
+          value={stat.nbrace} 
+        />
+        <StatRow 
+          label="Victoires" 
+          value={stat.nbvictory} 
+        />
+        <StatRow 
+          label="Durée moyenne d’une course" 
+          value={getAverageDuration(stat.avgduration)} 
+        />
+      </View>
+    </View>
+  );
+}
 const GeneralStatistics: React.FC<GeneralStatisticsProps> = ({data}) => {
-  const dataStats = [
-    {
-      name: 'Jules',
-      courses: {
-        label: 'Courses',
-        value: '72',
-      },
-      victoires: {
-        label: 'Victoires',
-        value: '87',
-      },
-      courseDuree: {
-        label: 'Durée moyenne d’une course',
-        value: '80',
-      },
-    },
-    {
-      name: 'Jérémy',
-      courses: {
-        label: 'Courses',
-        value: '23',
-      },
-      victoires: {
-        label: 'Victoires',
-        value: '65',
-      },
-      courseDuree: {
-        label: 'Durée moyenne d’une course',
-        value: '13',
-      },
-    },
-    {
-      name: 'Jean jean',
-      courses: {
-        label: 'Courses',
-        value: '05',
-      },
-      victoires: {
-        label: 'Victoires',
-        value: '05',
-      },
-      courseDuree: {
-        label: 'Durée moyenne d’une course',
-        value: '050',
-      },
-    },
-  ];
   return (
     <ScrollView
       style={styles.statGeneralContainer}
@@ -63,67 +79,10 @@ const GeneralStatistics: React.FC<GeneralStatisticsProps> = ({data}) => {
       <Text style={[globalStyles.paragraph, styles.statGeneralTitle]}>
         Statistiques des 3 meilleurs joueurs
       </Text>
-
       <View style={styles.statGeneralList}>
-        {dataStats.map((card, index) => {
-          return (
-            <View key={index} style={styles.statGeneralItem}>
-              <Text style={[globalStyles.paragraph18, styles.statGeneralName]}>
-                Nom
-              </Text>
-              <View style={styles.statGeneralItemText}>
-                <View style={styles.statGeneralItemRow}>
-                  <Text
-                    style={[
-                      globalStyles.paragraph14,
-                      styles.statGeneralItemLabel,
-                    ]}>
-                    Courses
-                  </Text>
-                  <Text
-                    style={[
-                      globalStyles.paragraph14,
-                      styles.statGeneralItemValue,
-                    ]}>
-                    {card.courses.value}
-                  </Text>
-                </View>
-                <View style={styles.statGeneralItemRow}>
-                  <Text
-                    style={[
-                      globalStyles.paragraph14,
-                      styles.statGeneralItemLabel,
-                    ]}>
-                    Victoires
-                  </Text>
-                  <Text
-                    style={[
-                      globalStyles.paragraph14,
-                      styles.statGeneralItemValue,
-                    ]}>
-                    {card.victoires.value}
-                  </Text>
-                </View>
-                <View style={styles.statGeneralItemRow}>
-                  <Text
-                    style={[
-                      globalStyles.paragraph14,
-                      styles.statGeneralItemLabel,
-                    ]}>
-                    Durée moyenne d’une course
-                  </Text>
-                  <Text
-                    style={[
-                      globalStyles.paragraph14,
-                      styles.statGeneralItemValue,
-                    ]}>
-                    {card.courseDuree.value}
-                  </Text>
-                </View>
-              </View>
-            </View>
-          );
-        })}
+        {data.map((stat, index) => (
+          <StatGeneralItem key={index} stat={stat} />
+        ))}
       </View>
     </ScrollView>
   );
