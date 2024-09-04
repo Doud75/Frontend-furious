@@ -1,12 +1,19 @@
 import React from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity, ViewStyle } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  TouchableOpacity,
+  ViewStyle,
+} from 'react-native';
 import globalStyles from '../assets/styles/globalStyles';
 import colors from '../assets/styles/colors';
 
 interface CardProps {
   navigationScreen?: {
-    screenName: string; 
-    params?: object; 
+    screenName: string;
+    params?: object;
   };
   navigation: any;
   text1: string;
@@ -15,29 +22,32 @@ interface CardProps {
   style?: ViewStyle;
 }
 
-const Card: React.FC<CardProps> = ({ text1, text2, imageSource, navigationScreen, navigation, style }) => {
+const Card: React.FC<CardProps> = ({
+  text1,
+  text2,
+  imageSource,
+  navigationScreen,
+  navigation,
+  style,
+}) => {
   const handlePress = () => {
     if (navigationScreen) {
-      const { screenName, params } = navigationScreen;
+      const {screenName, params} = navigationScreen;
       navigation.navigate(screenName, params);
     }
   };
-  
+
   return (
     <TouchableOpacity style={[styles.card, style]} onPress={handlePress}>
-        <View>
-            <Text style={[globalStyles.paragraph, styles.text1]}>
-                {text1}
-            </Text>
-            <Text style={[globalStyles.title3, styles.text2]}>
-                {text2}
-            </Text>
-            </View>
-        <Image
-            source={imageSource}
-            style={styles.boxImage}
-            resizeMode="contain"
-        />
+      <View>
+        <Text style={[globalStyles.paragraph, styles.text1]}>{text1}</Text>
+        <Text style={[globalStyles.title3, styles.text2]}>{text2}</Text>
+      </View>
+      <Image
+        source={imageSource}
+        style={styles.boxImage}
+        resizeMode="contain"
+      />
     </TouchableOpacity>
   );
 };
@@ -52,11 +62,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'column',
-    paddingBottom: 60
+    paddingBottom: 60,
   },
   text1: {
     textAlign: 'center',
-    fontFamily: 'Ruda-Regular'
+    fontFamily: 'Ruda-Regular',
   },
   text2: {
     textAlign: 'center',
@@ -65,7 +75,7 @@ const styles = StyleSheet.create({
     width: '80%',
     position: 'absolute',
     bottom: -30,
-  }
+  },
 });
 
 export default Card;
