@@ -20,20 +20,20 @@ const ButtonPrimary: React.FC<ButtonPrimaryProps> = ({
   onPress,
 }) => {
   const handleSubmit = () => {
-    onPress;
-    console.log('handleSubmit button comp');
-
+    if (onPress) {
+      onPress();
+    }
   };
 
   return (
-    <TouchableOpacity style={styles.container} onPress={handleSubmit}>
-      <View style={[styles.button]}>
+    <View style={styles.container}>
+      <TouchableOpacity style={[styles.button]} onPress={handleSubmit}>
         <Text style={[globalStyles.paragraph, styles.text]}>{text}</Text>
         {iconSource && (
           <Image source={iconSource} style={styles.icon} resizeMode="contain" />
         )}
-      </View>
-    </TouchableOpacity>
+      </TouchableOpacity>
+    </View>
   );
 };
 

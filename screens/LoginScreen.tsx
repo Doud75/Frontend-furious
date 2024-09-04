@@ -12,7 +12,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({navigation}) => {
     <View style={globalStyles.background}>
       <BackButton />
 
-      <ScrollView>
+      <ScrollView showsVerticalScrollIndicator={false} bounces={false}>
         <Text style={[globalStyles.title1, styles.title]}>
           Se connecter à la voiture
         </Text>
@@ -25,7 +25,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({navigation}) => {
 
 const styles = StyleSheet.create({
   title: {
-    marginBottom: 8,
+    marginBottom: 12,
   },
   paragraph: {
     marginBottom: 20,
