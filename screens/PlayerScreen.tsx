@@ -13,10 +13,6 @@ const { height: screenHeight } = Dimensions.get('window');
 const cardHeight = screenHeight * 0.37;
 
 const PlayerScreen: React.FC<PlayerScreenProps> = ({navigation}) => {
-  const onPressButton = () => {
-    () => navigation.navigate('Custom');
-  };
-
   return (
     <View style={[globalStyles.background, styles.page]}>
       <View style={styles.textContainer}>
@@ -67,6 +63,7 @@ const PlayerScreen: React.FC<PlayerScreenProps> = ({navigation}) => {
         iconSource={require('../assets/images/icons/icon-settings.png')}
         link={"Statistics"}
         style={styles.buttonIcon}
+        navigation={navigation}
       />
     </View>
   );
