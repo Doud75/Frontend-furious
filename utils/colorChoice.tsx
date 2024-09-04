@@ -24,19 +24,14 @@ const changeAllLedColor = (ws: WebSocket, itemValue: number[]) => {
 
 const changeLedColor = (ws : WebSocket,itemValue: number[]) => {
     if (ws && ws.readyState === WebSocket.OPEN) {
-    console.log(itemValue)
-    const message = {
-        cmd: 5,
-        data: itemValue,
-    };
-    ws.send(JSON.stringify(message));
+        console.log(itemValue)
+        const message = {
+            cmd: 5,
+            data: itemValue,
+        };
+        ws.send(JSON.stringify(message));
 
     }
-}
-
-const saveColor = (ws : WebSocket ,ledColor: string) => {
-    // Save color in the DB
-    // console.log(ledColor);
 }
 
 const ColorChoice: React.FC = () => {
@@ -44,7 +39,6 @@ const ColorChoice: React.FC = () => {
     const [ws] = useWebSocket();
     const handleSubmit = (itemValue: ColorTuple) => {
         if (ws){
-        saveColor(ws,itemValue[0])
         changeAllLedColor(ws,itemValue[1])
         }
     };
