@@ -4,7 +4,7 @@ import WebView from 'react-native-webview';
 import {useSelector} from 'react-redux';
 import {RootState} from '../reducer/store.tsx';
 
-const {width, height} = Dimensions.get('window');
+const {height} = Dimensions.get('window');
 
 const Camera: React.FC = () => {
   const formData = useSelector((state: RootState) => state.formData);
@@ -14,10 +14,15 @@ const Camera: React.FC = () => {
       scalesPageToFit={true}
       bounces={false}
       javaScriptEnabled
-      style={{height: width, width: height}}
+      style={{height: height, width: '100%', alignSelf: 'center', justifyContent: 'center', alignItems: 'center'}}
       source={{
         html: `
-          <img style="display: block;-webkit-user-select: none;margin: auto;" src="http://${formData.ip}:7000/" width="100%" alt="">
+          <img 
+            style="display: block;-webkit-user-select: none;margin: auto;" 
+            src="http://${formData.ip}:7000/" 
+            width="100%"
+            alt=""
+          >
         `,
       }}
       automaticallyAdjustContentInsets={false}

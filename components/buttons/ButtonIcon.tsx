@@ -19,12 +19,12 @@ const ButtonIcon: React.FC<ButtonIconProps> = ({
   navigation,
   link
 }) => {
-  const handleSubmit = () => {
+  const handlePress = () => {
     navigation.navigate(link);
   };
 
   return (
-    <TouchableOpacity style={[style, styles.container]} onPress={handleSubmit}>
+    <TouchableOpacity style={[style, styles.container]} onPress={handlePress}>
       <Image 
         source={iconSource} 
         style={styles.icon} 
