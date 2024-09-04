@@ -4,90 +4,126 @@ import globalStyles from '../../assets/styles/globalStyles';
 import colors from '../../assets/styles/colors';
 
 interface GeneralStatisticsProps {
-  data: any
+  data: any;
 }
 
-const GeneralStatistics: React.FC<GeneralStatisticsProps> = ({
-  data,
-}) => {
+const GeneralStatistics: React.FC<GeneralStatisticsProps> = ({data}) => {
   const dataStats = [
     {
       name: 'Jules',
       courses: {
-        label: "Courses", 
-        value : '72'
+        label: 'Courses',
+        value: '72',
       },
       victoires: {
-        label: "Victoires", 
-        value : '87'
+        label: 'Victoires',
+        value: '87',
       },
       courseDuree: {
-        label: "Durée moyenne d’une course", 
-        value : '80'
+        label: 'Durée moyenne d’une course',
+        value: '80',
       },
     },
     {
       name: 'Jérémy',
       courses: {
-        label: "Courses", 
-        value : '23'
+        label: 'Courses',
+        value: '23',
       },
       victoires: {
-        label: "Victoires", 
-        value : '65'
+        label: 'Victoires',
+        value: '65',
       },
       courseDuree: {
-        label: "Durée moyenne d’une course", 
-        value : '13'
+        label: 'Durée moyenne d’une course',
+        value: '13',
       },
     },
     {
       name: 'Jean jean',
       courses: {
-        label: "Courses", 
-        value : '05'
+        label: 'Courses',
+        value: '05',
       },
       victoires: {
-        label: "Victoires", 
-        value : '05'
+        label: 'Victoires',
+        value: '05',
       },
       courseDuree: {
-        label: "Durée moyenne d’une course", 
-        value : '050'
+        label: 'Durée moyenne d’une course',
+        value: '050',
       },
     },
-  ]
+  ];
   return (
-    <ScrollView style={styles.statGeneralContainer} bounces={false} showsVerticalScrollIndicator={false}>
+    <ScrollView
+      style={styles.statGeneralContainer}
+      bounces={false}
+      showsVerticalScrollIndicator={false}>
       <Text style={[globalStyles.paragraph, styles.statGeneralTitle]}>
         Statistiques des 3 meilleurs joueurs
       </Text>
+
       <View style={styles.statGeneralList}>
-        {
-          dataStats.map((card, index) => {
-            return (
-              <View key={index} style={styles.statGeneralItem}>
-                <Text style={[globalStyles.paragraph18, styles.statGeneralName]}>
-                  Nom
-                </Text>
-                <View style={styles.statGeneralItemText}>
-                  <View style={styles.statGeneralItemRow}>
-                    <Text style={[globalStyles.paragraph14, styles.statGeneralItemLabel]}>Courses</Text>
-                    <Text style={[globalStyles.paragraph14, styles.statGeneralItemValue]}>{card.courses.value}</Text>
-                  </View>
-                  <View style={styles.statGeneralItemRow}>
-                    <Text style={[globalStyles.paragraph14, styles.statGeneralItemLabel]}>Victoires</Text>
-                    <Text style={[globalStyles.paragraph14, styles.statGeneralItemValue]}>{card.victoires.value}</Text>
-                  </View>
-                  <View style={styles.statGeneralItemRow}>
-                    <Text style={[globalStyles.paragraph14, styles.statGeneralItemLabel]}>Durée moyenne d’une course</Text>
-                    <Text style={[globalStyles.paragraph14, styles.statGeneralItemValue]}>{card.courseDuree.value}</Text>
-                  </View>
+        {dataStats.map((card, index) => {
+          return (
+            <View key={index} style={styles.statGeneralItem}>
+              <Text style={[globalStyles.paragraph18, styles.statGeneralName]}>
+                Nom
+              </Text>
+              <View style={styles.statGeneralItemText}>
+                <View style={styles.statGeneralItemRow}>
+                  <Text
+                    style={[
+                      globalStyles.paragraph14,
+                      styles.statGeneralItemLabel,
+                    ]}>
+                    Courses
+                  </Text>
+                  <Text
+                    style={[
+                      globalStyles.paragraph14,
+                      styles.statGeneralItemValue,
+                    ]}>
+                    {card.courses.value}
+                  </Text>
+                </View>
+                <View style={styles.statGeneralItemRow}>
+                  <Text
+                    style={[
+                      globalStyles.paragraph14,
+                      styles.statGeneralItemLabel,
+                    ]}>
+                    Victoires
+                  </Text>
+                  <Text
+                    style={[
+                      globalStyles.paragraph14,
+                      styles.statGeneralItemValue,
+                    ]}>
+                    {card.victoires.value}
+                  </Text>
+                </View>
+                <View style={styles.statGeneralItemRow}>
+                  <Text
+                    style={[
+                      globalStyles.paragraph14,
+                      styles.statGeneralItemLabel,
+                    ]}>
+                    Durée moyenne d’une course
+                  </Text>
+                  <Text
+                    style={[
+                      globalStyles.paragraph14,
+                      styles.statGeneralItemValue,
+                    ]}>
+                    {card.courseDuree.value}
+                  </Text>
                 </View>
               </View>
-            )
-          })
-        }
+            </View>
+          );
+        })}
       </View>
     </ScrollView>
   );
@@ -95,7 +131,7 @@ const GeneralStatistics: React.FC<GeneralStatisticsProps> = ({
 
 const styles = StyleSheet.create({
   statGeneralContainer: {
-
+    marginBottom: -28,
   },
   statGeneralTitle: {
     padding: 12,
@@ -122,7 +158,7 @@ const styles = StyleSheet.create({
   statGeneralItemRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'flex-start'
+    alignItems: 'flex-start',
   },
   statGeneralItemLabel: {
     fontSize: 14,

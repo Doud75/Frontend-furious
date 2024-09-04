@@ -4,59 +4,59 @@ import globalStyles from '../../assets/styles/globalStyles';
 import colors from '../../assets/styles/colors';
 
 interface UserStatisticsProps {
-  data: any
+  data: any;
 }
 
-const UserStatistics: React.FC<UserStatisticsProps> = ({
-  data
-}) => {
-
+const UserStatistics: React.FC<UserStatisticsProps> = ({data}) => {
   const rowsStats = [
     {
-      label: "Courses", 
-      value : data.nbCourses
+      label: 'Courses',
+      value: data.nbCourses,
     },
     {
-      label: "Victoires", 
-      value : data.nbVictoires
+      label: 'Victoires',
+      value: data.nbVictoires,
     },
     {
-      label: "Durée moyenne d’une course", 
-      value : data.raceDuration
+      label: 'Durée moyenne d’une course',
+      value: data.raceDuration,
     },
     {
-      label: "Durée moyenne d’un tour", 
-      value : data.tourDuration
+      label: 'Durée moyenne d’un tour',
+      value: data.tourDuration,
     },
-  ]
+  ];
   return (
-    <View style={styles.statPersoContainer}>
+    <ScrollView
+      style={styles.statPersoContainer}
+      bounces={false}
+      showsVerticalScrollIndicator={false}>
       <Text style={[globalStyles.title4, styles.statPersoTitle]}>
         Nom du joueur
       </Text>
-      <ScrollView bounces={false} showsVerticalScrollIndicator={false}>
-        {
-          rowsStats.map((row, index) => {
-            return (
-              <View key={index} style={styles.statPersoItem}>
-                <Text style={[globalStyles.paragraph, styles.statPersoPara1]}>
-                  {row.label}
-                </Text>
-                <Text style={[globalStyles.paragraph, styles.statPersoPara2]}>
-                  {row.value}
-                </Text>
-              </View>
-            )
-          })
-        }
-      </ScrollView>
-    </View>
+
+      <View>
+        {rowsStats.map((row, index) => {
+          return (
+            <View key={index} style={styles.statPersoItem}>
+              <Text style={[globalStyles.paragraph, styles.statPersoPara1]}>
+                {row.label}
+              </Text>
+              <Text style={[globalStyles.paragraph, styles.statPersoPara2]}>
+                {row.value}
+              </Text>
+            </View>
+          );
+        })}
+      </View>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   statPersoContainer: {
     flex: 1,
+    marginBottom: -28,
   },
   statPersoTitle: {
     marginBottom: 12,

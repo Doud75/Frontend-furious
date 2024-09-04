@@ -4,6 +4,8 @@ import {RootStackParamList} from '../types/types.ts';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {apiUrlBack} from '../config.json';
 import {postFetch} from '../helpers/fetch';
+import BackButton from '../components/BackButton.tsx';
+import globalStyles from '../assets/styles/globalStyles.tsx';
 
 type RacingFormScreenProps = NativeStackScreenProps<
   RootStackParamList,
@@ -50,7 +52,9 @@ const RacingForm: React.FC<RacingFormScreenProps> = ({navigation}) => {
   }
 
   return (
-    <View style={styles.container}>
+    <View style={[globalStyles.background]}>
+      <BackButton />
+
       {error !== '' && <Text style={styles.error}>{error}</Text>}
       <TextInput
         style={styles.input}
