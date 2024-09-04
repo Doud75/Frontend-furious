@@ -18,10 +18,27 @@ const globalStyles = StyleSheet.create({
         color: colors.white,
         fontFamily: 'Ruda-ExtraBold',
     },
+    title4: {
+        fontSize: 28,
+        color: colors.white,
+        fontFamily: 'Ruda-Bold',
+    },
     paragraph: {
         fontSize: 16,
         color: colors.white,
         lineHeight: 23,
+        fontFamily: 'Roboto-Regular',
+    },
+    paragraph18: {
+        fontSize: 18,
+        color: colors.white,
+        lineHeight: 23,
+        fontFamily: 'Roboto-Regular',
+    },
+    paragraph14: {
+        fontSize: 14,
+        color: colors.white,
+        lineHeight: 18,
         fontFamily: 'Roboto-Regular',
     },
     background:{

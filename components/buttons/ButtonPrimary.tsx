@@ -1,7 +1,7 @@
 import React from 'react';
 import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
-import globalStyles from '../assets/styles/globalStyles';
-import colors from '../assets/styles/colors';
+import globalStyles from '../../assets/styles/globalStyles';
+import colors from '../../assets/styles/colors';
 
 interface ButtonPrimaryProps {
   navigationScreen?: {

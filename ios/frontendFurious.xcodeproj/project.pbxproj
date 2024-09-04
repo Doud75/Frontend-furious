@@ -19,6 +19,8 @@
 		FBCF8B7322DA4FE685A31E5B /* Roboto-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4155A59841264A4891EE2DCB /* Roboto-Regular.ttf */; };
 		A5DC19CD8C0D4236B89BBBF2 /* Ruda-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9D65E4E8ACAA46C4B7C77A04 /* Ruda-ExtraBold.ttf */; };
 		9B55916FA9CA4326BB0F0275 /* Ruda-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1BAEEDAD52DA46728E591DCD /* Ruda-Regular.ttf */; };
+		EDB08925D9BF46AEAAC9F7AF /* Roboto-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A3C42A58D483497A81976C81 /* Roboto-Bold.ttf */; };
+		66D1BD27918745F0AD503684 /* Roboto-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E10EBB6EFFA743D9805FB7C1 /* Roboto-Light.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -55,6 +57,8 @@
 		4155A59841264A4891EE2DCB /* Roboto-Regular.ttf */ = {isa = PBXFileReference; name = "Roboto-Regular.ttf"; path = "../assets/fonts/Roboto-Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		9D65E4E8ACAA46C4B7C77A04 /* Ruda-ExtraBold.ttf */ = {isa = PBXFileReference; name = "Ruda-ExtraBold.ttf"; path = "../assets/fonts/Ruda-ExtraBold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		1BAEEDAD52DA46728E591DCD /* Ruda-Regular.ttf */ = {isa = PBXFileReference; name = "Ruda-Regular.ttf"; path = "../assets/fonts/Ruda-Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		A3C42A58D483497A81976C81 /* Roboto-Bold.ttf */ = {isa = PBXFileReference; name = "Roboto-Bold.ttf"; path = "../assets/fonts/Roboto-Bold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		E10EBB6EFFA743D9805FB7C1 /* Roboto-Light.ttf */ = {isa = PBXFileReference; name = "Roboto-Light.ttf"; path = "../assets/fonts/Roboto-Light.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -169,6 +173,8 @@
 				4155A59841264A4891EE2DCB /* Roboto-Regular.ttf */,
 				9D65E4E8ACAA46C4B7C77A04 /* Ruda-ExtraBold.ttf */,
 				1BAEEDAD52DA46728E591DCD /* Ruda-Regular.ttf */,
+				A3C42A58D483497A81976C81 /* Roboto-Bold.ttf */,
+				E10EBB6EFFA743D9805FB7C1 /* Roboto-Light.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -274,6 +280,8 @@
 				FBCF8B7322DA4FE685A31E5B /* Roboto-Regular.ttf in Resources */,
 				A5DC19CD8C0D4236B89BBBF2 /* Ruda-ExtraBold.ttf in Resources */,
 				9B55916FA9CA4326BB0F0275 /* Ruda-Regular.ttf in Resources */,
+				EDB08925D9BF46AEAAC9F7AF /* Roboto-Bold.ttf in Resources */,
+				66D1BD27918745F0AD503684 /* Roboto-Light.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

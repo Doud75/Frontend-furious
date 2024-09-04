@@ -9,4 +9,5 @@ export type RootStackParamList = {
   Custom: undefined;
   RaceList: undefined;
   TrackRace: undefined;
+  Statistics: undefined;
 };
