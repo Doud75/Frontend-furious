@@ -63,10 +63,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'column',
     paddingBottom: 60,
-    shadowColor: '#576FEF', 
-    shadowOffset: { width: 0, height: 0 },
+    shadowColor: '#576FEF',
+    shadowOffset: {width: 0, height: 0},
     shadowOpacity: 0.15,
-    shadowRadius: 19, 
+    shadowRadius: 19,
   },
   text1: {
     textAlign: 'center',

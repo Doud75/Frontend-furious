@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View, TextInput, Button, StyleSheet, Text} from 'react-native';
+import {View, TextInput, StyleSheet, Text} from 'react-native';
 import {setFormData} from '../reducer/actions';
 import {useDispatch, useSelector} from 'react-redux';
 import {apiUrlBack} from '../config.json';
@@ -7,6 +7,7 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootStackParamList} from '../types/types.ts';
 import colors from '../assets/styles/colors.tsx';
 import {postFetch} from '../helpers/fetch';
+import ButtonPrimary from '../components/buttons/ButtonPrimary.tsx';
 
 interface StateProps {
   formData: FormDataProps;
@@ -75,8 +76,7 @@ const Login: React.FC<LoginProps> = ({navigation}) => {
     }
   };
 
-  const handleSubmit = async (e: any) => {
-    e.preventDefault();
+  const handleSubmit = async () => {
     setRequired(false);
     if (!formState.username || !formState.ip || !formState.topic) {
       setRequired(true);
@@ -95,6 +95,7 @@ const Login: React.FC<LoginProps> = ({navigation}) => {
           Veuillez remplir tout les champs
         </Text>
       )}
+
       <TextInput
         placeholderTextColor="grey"
         style={styles.input}
@@ -102,13 +103,15 @@ const Login: React.FC<LoginProps> = ({navigation}) => {
         value={formState.ip || ''}
         onChangeText={text => handleChange('ip', text)}
       />
+
       <TextInput
         placeholderTextColor="grey"
         style={styles.input}
-        placeholder="topic"
+        placeholder="Topic"
         value={formState.topic || ''}
         onChangeText={text => handleChange('topic', text)}
       />
+
       <TextInput
         placeholderTextColor="grey"
         style={styles.input}
@@ -116,12 +119,12 @@ const Login: React.FC<LoginProps> = ({navigation}) => {
         value={formState.username || ''}
         onChangeText={text => handleChange('username', text)}
       />
-      {/* <ButtonPrimary
+
+      <ButtonPrimary
         text="Se connecter"
         onPress={handleSubmit}
         iconSource={require('../assets/images/icons/icon-lightning.png')}
-      /> */}
-      <Button title="Submit" onPress={handleSubmit} />
+      />
     </View>
   );
 };
@@ -132,8 +135,9 @@ const styles = StyleSheet.create({
     height: 40,
     borderColor: 'gray',
     borderWidth: 1,
-    marginBottom: 10,
+    marginBottom: 12,
     paddingLeft: 8,
+    borderRadius: 8,
   },
   requiredText: {
     color: 'red',

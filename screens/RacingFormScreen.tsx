@@ -1,9 +1,12 @@
 import React, {useState} from 'react';
-import {View, TextInput, Button, StyleSheet, Text} from 'react-native';
+import {View, TextInput, StyleSheet, Text, ScrollView} from 'react-native';
 import {RootStackParamList} from '../types/types.ts';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {apiUrlBack} from '../config.json';
 import {postFetch} from '../helpers/fetch';
+import BackButton from '../components/BackButton.tsx';
+import globalStyles from '../assets/styles/globalStyles.tsx';
+import ButtonPrimary from '../components/buttons/ButtonPrimary.tsx';
 
 type RacingFormScreenProps = NativeStackScreenProps<
   RootStackParamList,
@@ -45,26 +48,43 @@ const RacingForm: React.FC<RacingFormScreenProps> = ({navigation}) => {
 
       return response.json();*/
     } else {
-      setError('Veuillez spécifier un nom de course.');
+      setError('Veuillez remplir tout les champs');
     }
   }
 
   return (
-    <View style={styles.container}>
-      {error !== '' && <Text style={styles.error}>{error}</Text>}
-      <TextInput
-        style={styles.input}
-        placeholder="Nom de la course"
-        value={raceName || ''}
-        onChangeText={name => setRaceName(name)}
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Nom de la course"
-        value={tourCount || '2'}
-        onChangeText={tour => setTourCount(tour)}
-      />
-      <Button title="Submit" onPress={handleSubmit} />
+    <View style={[globalStyles.background]}>
+      <BackButton />
+
+      <ScrollView showsVerticalScrollIndicator={false} bounces={false}>
+        <Text style={[globalStyles.title1, styles.title]}>
+          Créer une course
+        </Text>
+
+        {error !== '' && <Text style={styles.error}>{error}</Text>}
+
+        <TextInput
+          onChangeText={name => setRaceName(name)}
+          placeholder="Nom de la course"
+          placeholderTextColor="grey"
+          style={styles.input}
+          value={raceName || ''}
+        />
+
+        <TextInput
+          onChangeText={tour => setTourCount(tour)}
+          placeholder="Nombre de tours"
+          placeholderTextColor="grey"
+          style={styles.input}
+          value={tourCount || ''}
+        />
+
+        <ButtonPrimary
+          text="Créer"
+          onPress={createRace}
+          iconSource={require('../assets/images/icons/icon-lightning.png')}
+        />
+      </ScrollView>
     </View>
   );
 };
@@ -73,21 +93,21 @@ const styles = StyleSheet.create({
   container: {
     padding: 20,
   },
+  title: {
+    marginBottom: 12,
+  },
   input: {
-    color: 'black',
+    color: 'white',
     height: 40,
     borderColor: 'gray',
     borderWidth: 1,
-    marginBottom: 10,
+    marginBottom: 12,
     paddingLeft: 8,
+    borderRadius: 8,
   },
   error: {
-    backgroundColor: 'rgba(255, 0, 0, 0.8)',
-    color: 'white',
-    padding: 10,
-    borderRadius: 5,
-    marginBottom: 10,
-    textAlign: 'center',
+    color: 'red',
+    marginBottom: 20,
   },
 });
 

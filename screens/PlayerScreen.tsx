@@ -1,20 +1,35 @@
 import React from 'react';
-import {View, Text, StyleSheet, Image, Pressable, Dimensions} from 'react-native';
+
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  Pressable,
+  Dimensions,
+} from 'react-native';
 import {RootStackParamList} from '../types/types.ts';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import globalStyles from '../assets/styles/globalStyles';
 import Card from '../components/Card.tsx';
+import BackButton from '../components/BackButton.tsx';
 import colors from '../assets/styles/colors.tsx';
 import ButtonIcon from '../components/buttons/ButtonIcon.tsx';
 
 type PlayerScreenProps = NativeStackScreenProps<RootStackParamList, 'Player'>;
 
-const { height: screenHeight } = Dimensions.get('window');
+const {height: screenHeight} = Dimensions.get('window');
 const cardHeight = screenHeight * 0.37;
 
 const PlayerScreen: React.FC<PlayerScreenProps> = ({navigation}) => {
+  const onPressButton = () => {
+    () => navigation.navigate('Custom');
+  };
+
   return (
     <View style={[globalStyles.background, styles.page]}>
+      <BackButton />
+
       <View style={styles.textContainer}>
         <Text style={[globalStyles.title1, styles.title1]}>
           Modes de conduite
@@ -59,7 +74,7 @@ const PlayerScreen: React.FC<PlayerScreenProps> = ({navigation}) => {
           imageSource={require('../assets/images/mode-auto.png')}
         />
       </View>
-      <ButtonIcon 
+      <ButtonIcon
         iconSource={require('../assets/images/icons/icon-settings.png')}
         link={"Custom"}
         style={styles.buttonIcon}
