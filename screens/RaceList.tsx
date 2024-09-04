@@ -3,15 +3,18 @@ import {
   FlatList,
   StyleSheet,
   Text,
-  TouchableOpacity,
   SafeAreaView,
   View,
+  TouchableOpacity,
 } from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootStackParamList} from '../types/types.ts';
-import {apiUrlBack} from '../config.json';
 import {useIsFocused} from '@react-navigation/native';
-import {getFetch} from '../helpers/fetch';
+import globalStyles from '../assets/styles/globalStyles.tsx';
+import BackButton from '../components/BackButton.tsx';
+import colors from '../assets/styles/colors.tsx';
+import {getFetch} from '../helpers/fetch.js';
+import {apiUrlBack} from '../config.json';
 
 type RaceListScreenProps = NativeStackScreenProps<
   RootStackParamList,
@@ -35,75 +38,101 @@ const RaceListScreen: React.FC<RaceListScreenProps> = ({navigation}) => {
       })*/
     getFetch(`${apiUrlBack}/race`)
       .then(data => {
-        setRace(data);
+        setRace(data ?? []);
+        // Fake data
+        // setRace([
+        //   {id: '19', name: 'Nom de la course'},
+        //   {id: '9', name: 'Nom de la course 2'},
+        //   {id: '2', name: 'Nom de la course 3'},
+        //   {id: '3', name: 'Nom de la course 4'},
+        //   {id: '123', name: 'Nom de la course 5'},
+        //   {id: '313', name: 'Nom de la course 6'},
+        // ]);
       })
       .catch(error => {
         console.error('Erreur :', error);
       });
   }, [isFocused]);
   return (
-    <SafeAreaView style={styles.container}>
-      <FlatList
-        data={races}
-        keyExtractor={item => item.id}
-        renderItem={({item}) => (
-          <TouchableOpacity
-            key={item.id}
-            onPress={() => {
-              navigation.navigate('FreeRace', {
-                raceId: item.id,
-              });
-            }}
-            style={styles.conversationItem}>
-            <View style={styles.conversationDetails}>
-              <View style={styles.nameContentContainer}>
-                <Text style={styles.conversationName}>{item.name}</Text>
+    <View style={[globalStyles.background]}>
+      <BackButton />
+
+      <Text style={[globalStyles.title1, styles.title]}>
+        Rejoindre une course
+      </Text>
+
+      {races?.length ? (
+        <SafeAreaView>
+          <FlatList
+            data={races}
+            keyExtractor={item => item.id}
+            renderItem={({item}) => (
+              <View style={styles.raceRowContainer} key={item.id}>
+                <Text style={[globalStyles.paragraph, styles.raceRowLabel]}>
+                  {item.name}
+                </Text>
+
+                <TouchableOpacity
+                  onPress={() => {
+                    navigation.navigate('FreeRace', {
+                      raceId: item.id,
+                    });
+                  }}>
+                  <Text style={styles.raceRowButton}>Rejoindre</Text>
+                </TouchableOpacity>
               </View>
-            </View>
-          </TouchableOpacity>
-        )}
-      />
-    </SafeAreaView>
+            )}
+          />
+        </SafeAreaView>
+      ) : (
+        <View style={styles.noRaceContainer}>
+          <Text style={styles.noRaceText}>
+            Aucune course à rejoindre pour le moment
+          </Text>
+        </View>
+      )}
+    </View>
   );
 };
 export default RaceListScreen;
 
 const styles = StyleSheet.create({
-  touchable: {
-    bottom: 24,
+  title: {
+    marginBottom: 12,
   },
-  tinyLogo: {
-    width: 65,
-    height: 65,
-    borderRadius: 400,
-    left: '100%',
-    transform: [{translateX: -80}],
-  },
-  container: {
-    flex: 1,
+
+  raceRowContainer: {
+    marginBottom: 12,
     padding: 16,
-  },
-  conversationItem: {
-    paddingVertical: 16,
-  },
-  conversationDetails: {
-    flex: 1,
-  },
-  nameContentContainer: {
-    marginBottom: 4,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    borderRadius: 10,
+    backgroundColor: colors.grey,
   },
-  conversationName: {
-    fontSize: 18,
-    fontWeight: 'bold',
+
+  raceRowLabel: {
+    fontFamily: 'Roboto-Light',
   },
-  updatedAt: {
-    fontSize: 14,
-  },
-  conversationContent: {
+
+  raceRowButton: {
+    color: colors.primary,
+    fontFamily: 'Roboto-Medium',
     fontSize: 16,
-    marginBottom: 6,
+  },
+
+  noRaceContainer: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: 200,
+  },
+
+  noRaceText: {
+    color: colors.greyLight,
+    fontFamily: 'Roboto-Light',
+    fontSize: 16,
   },
 });
