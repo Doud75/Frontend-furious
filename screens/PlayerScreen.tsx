@@ -61,7 +61,7 @@ const PlayerScreen: React.FC<PlayerScreenProps> = ({navigation}) => {
       </View>
       <ButtonIcon 
         iconSource={require('../assets/images/icons/icon-settings.png')}
-        link={"Statistics"}
+        link={"Custom"}
         style={styles.buttonIcon}
         navigation={navigation}
       />

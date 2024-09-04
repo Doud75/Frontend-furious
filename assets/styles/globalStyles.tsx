@@ -23,6 +23,11 @@ const globalStyles = StyleSheet.create({
         color: colors.white,
         fontFamily: 'Ruda-Bold',
     },
+    title32: {
+        fontSize: 32,
+        color: colors.white,
+        fontFamily: 'Ruda-ExtraBold',
+    },
     paragraph: {
         fontSize: 16,
         color: colors.white,
