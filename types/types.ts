@@ -3,7 +3,6 @@ export type RootStackParamList = {
   Player: undefined;
   Referee: undefined;
   Login: undefined;
-  AutoRace: {raceId: string};
   FreeRace: {raceId: string};
   RacingForm: undefined;
   Racing: {raceId: string; tourCount: string};
