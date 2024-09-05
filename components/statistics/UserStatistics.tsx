@@ -1,36 +1,63 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {View, Text, StyleSheet, ScrollView} from 'react-native';
 import globalStyles from '../../assets/styles/globalStyles';
 import colors from '../../assets/styles/colors';
+import { getFetch } from '../../helpers/fetch';
+import {apiUrlBack} from '../../config.json';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../reducer/store';
 
-interface UserStatisticsProps {
-  data: {
+interface playerStats{
+  player: {
     username: string,
     nbrace: string,
     nbvictory: string,
     avgduration: string,
     avgdurationpertour: string,
   },
-  username: string
 }
 
-const UserStatistics: React.FC<UserStatisticsProps> = ({data, username}) => {
+const initPlayerStats = {
+  player: {
+    username: '',
+    nbrace: '',
+    nbvictory: '',
+    avgduration: '',
+    avgdurationpertour: '',
+  }
+}
+
+const UserStatistics = () => {
+  const [playerStats, setPlayerStats] = useState<playerStats>(initPlayerStats);
+  const formData = useSelector((state: RootState) => state.formData);
+  const playerId = formData.id  
+  const playerUsername = formData.username
+
+  useEffect(() => {
+    getFetch(`${apiUrlBack}/get-stats/${playerId}`)
+      .then(data => {
+        setPlayerStats(data);
+      })
+      .catch(error => {
+        console.error('Erreur :', error);
+    });
+  }, [])
   const rowsStats = [
     {
       label: 'Courses',
-      value: data.nbrace,
+      value: playerStats.player.nbrace,
     },
     {
       label: 'Victoires',
-      value: data.nbvictory,
+      value: playerStats.player.nbvictory,
     },
     {
       label: 'Durée moyenne d’une course',
-      value: data.avgduration || "0",
+      value: playerStats.player.avgduration || "0",
     },
     {
       label: 'Durée moyenne d’un tour',
-      value: data.avgdurationpertour || "0",
+      value: playerStats.player.avgdurationpertour || "0",
     },
   ];
   
@@ -40,7 +67,7 @@ const UserStatistics: React.FC<UserStatisticsProps> = ({data, username}) => {
       bounces={false}
       showsVerticalScrollIndicator={false}>
       <Text style={[globalStyles.title4, styles.statPersoTitle]}>
-        {username}
+        {playerUsername}
       </Text>
 
       <View>
