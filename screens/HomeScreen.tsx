@@ -47,14 +47,12 @@ const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
           imageSource={require('../assets/images/arbitre.png')}
         />
       </View>
-      { playerId && 
-        <ButtonIcon 
-          iconSource={require('../assets/images/icons/icon-statistic.png')}
-          link={"Statistics"}
-          style={styles.buttonIcon}
-          navigation={navigation}
-        />
-      }
+      <ButtonIcon 
+        iconSource={require('../assets/images/icons/icon-statistic.png')}
+        link={"Statistics"}
+        style={styles.buttonIcon}
+        navigation={navigation}
+      />
     </View>
   );
 };

@@ -1,15 +1,23 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {View, Text, StyleSheet, ScrollView} from 'react-native';
 import globalStyles from '../../assets/styles/globalStyles';
 import colors from '../../assets/styles/colors';
+import { getFetch } from '../../helpers/fetch';
+import {apiUrlBack} from '../../config.json';
 
-interface GeneralStatisticsProps {
-  data: {
+
+interface allStats{
+  statsGeneral:{
     username: string,
     nbrace: string,
     nbvictory: string,
     avgduration: string,
-  }[];
+  }[]
+}
+
+
+const initAllStats = {
+  statsGeneral: [],
 }
 
 interface Stat {
@@ -70,7 +78,18 @@ const StatGeneralItem = ({ stat }: Stat) => {
     </View>
   );
 }
-const GeneralStatistics: React.FC<GeneralStatisticsProps> = ({data}) => {
+const GeneralStatistics = () => {
+  const [allStats, setAllStats] = useState<allStats>(initAllStats);
+
+  useEffect(() => {
+    getFetch(`${apiUrlBack}/get-all-stats`)
+      .then(data => {
+        setAllStats(data);
+      })
+      .catch(error => {
+        console.error('Erreur :', error);
+    });
+  }, [])
   return (
     <ScrollView
       style={styles.statGeneralContainer}
@@ -80,7 +99,7 @@ const GeneralStatistics: React.FC<GeneralStatisticsProps> = ({data}) => {
         Statistiques des 3 meilleurs joueurs
       </Text>
       <View style={styles.statGeneralList}>
-        {data.map((stat, index) => (
+        {allStats.statsGeneral.map((stat, index) => (
           <StatGeneralItem key={index} stat={stat} />
         ))}
       </View>
