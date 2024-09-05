@@ -39,7 +39,7 @@ const RaceListScreen: React.FC<RaceListScreenProps> = ({navigation}) => {
     getFetch(`${apiUrlBack}/race`)
       .then(data => {
         setRace(data ?? []);
-        // Fake data
+        // Fake data - to delete
         // setRace([
         //   {id: '19', name: 'Nom de la course'},
         //   {id: '9', name: 'Nom de la course 2'},
@@ -62,7 +62,7 @@ const RaceListScreen: React.FC<RaceListScreenProps> = ({navigation}) => {
       </Text>
 
       {races?.length ? (
-        <SafeAreaView>
+        <SafeAreaView style={styles.safeArea}>
           <FlatList
             data={races}
             keyExtractor={item => item.id}
@@ -82,6 +82,9 @@ const RaceListScreen: React.FC<RaceListScreenProps> = ({navigation}) => {
                 </TouchableOpacity>
               </View>
             )}
+            showsVerticalScrollIndicator={false}
+            bounces={false}
+            overScrollMode="never"
           />
         </SafeAreaView>
       ) : (
@@ -94,9 +97,15 @@ const RaceListScreen: React.FC<RaceListScreenProps> = ({navigation}) => {
     </View>
   );
 };
+
 export default RaceListScreen;
 
 const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+    marginBottom: -28,
+  },
+
   title: {
     marginBottom: 12,
   },
