@@ -2,6 +2,7 @@ import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import ControlScreen from '../screens/ControlScreen.tsx';
+import AutoScreen from '../screens/AutoScreen.tsx';
 import LoginScreen from '../screens/LoginScreen.tsx';
 import {Provider} from 'react-redux';
 import store from '../reducer/store.tsx';
@@ -30,6 +31,7 @@ export default function () {
           <Stack.Screen name="Player" component={PlayerScreen} />
           <Stack.Screen name="Referee" component={RefereeScreen} />
           <Stack.Screen name="FreeRace" component={ControlScreen} />
+          <Stack.Screen name="AutoRace" component={AutoScreen} />
           <Stack.Screen name="RacingForm" component={RacingFormScreen} />
           <Stack.Screen name="Racing" component={RacingScreen} />
           <Stack.Screen name="Custom" component={CustomScreen} />

@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from 'react';
 import {View, StyleSheet} from 'react-native';
-import Joystick from '../utils/joystick.tsx';
 import Camera from '../utils/camera.tsx';
 import Klaxon from '../utils/klaxonButton.tsx';
 import io from 'socket.io-client';
@@ -14,12 +13,15 @@ import {WebSocketProvider} from '../context/WebSocketContext.tsx';
 import colors from '../assets/styles/colors.tsx';
 import {postFetch} from '../helpers/fetch.js';
 import ButtonLeave from '../components/buttons/ButtonLeave.tsx';
+import ButtonAutoMode from '../components/buttons/ButtonAutoMode.tsx';
 
-type ControlScreenRouteProp = RouteProp<RootStackParamList, 'FreeRace'>;
-const ControlScreen = () => {
+type AutoScreenRouteProp = RouteProp<RootStackParamList, 'AutoRace'>;
+
+const AutoScreen = () => {
   const formData = useSelector((state: RootState) => state.formData);
-  const route = useRoute<ControlScreenRouteProp>();
-  const {raceId} = route.params;
+  const route = useRoute<AutoScreenRouteProp>();
+  const raceId = '200';
+  // const {raceId} = route.params;
   /*const [ws] = useWebSocket();*/
   const [nbPlayer, setnbPlayer] = useState('');
   useEffect(() => {
@@ -82,8 +84,8 @@ const ControlScreen = () => {
       <View style={styles.leaveButton}>
         <ButtonLeave />
       </View>
-      <View style={styles.joystick}>
-        <Joystick radius={60} innerRadius={45} />
+      <View style={styles.autoMode}>
+        <ButtonAutoMode />
       </View>
       <View style={styles.klaxon}>
         <Klaxon />
@@ -103,11 +105,11 @@ const styles = StyleSheet.create({
     width: 'auto',
     zIndex: 2,
   },
-  joystick: {
+  autoMode: {
     zIndex: 2,
     width: 'auto',
     position: 'absolute',
-    bottom: '10%',
+    bottom: '9%',
     left: '5%',
   },
   klaxon: {
@@ -133,4 +135,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ControlScreen;
+export default AutoScreen;
