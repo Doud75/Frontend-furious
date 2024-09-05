@@ -59,7 +59,6 @@ const changeAllLedColor = (ws: WebSocket, itemValue: number[]) => {
 
 const changeLedColor = (ws : WebSocket, itemValue: number[]) => {
     if (ws && ws.readyState === WebSocket.OPEN) {
-        console.log(itemValue)
         const message = {
             cmd: 5,
             data: itemValue,

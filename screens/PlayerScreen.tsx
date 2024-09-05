@@ -4,8 +4,6 @@ import {
   View,
   Text,
   StyleSheet,
-  Image,
-  Pressable,
   Dimensions,
 } from 'react-native';
 import {RootStackParamList} from '../types/types.ts';
@@ -13,7 +11,6 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import globalStyles from '../assets/styles/globalStyles';
 import Card from '../components/Card.tsx';
 import BackButton from '../components/BackButton.tsx';
-import colors from '../assets/styles/colors.tsx';
 import ButtonIcon from '../components/buttons/ButtonIcon.tsx';
 
 type PlayerScreenProps = NativeStackScreenProps<RootStackParamList, 'Player'>;
@@ -22,9 +19,6 @@ const {height: screenHeight} = Dimensions.get('window');
 const cardHeight = screenHeight * 0.37;
 
 const PlayerScreen: React.FC<PlayerScreenProps> = ({navigation}) => {
-  const onPressButton = () => {
-    () => navigation.navigate('Custom');
-  };
 
   return (
     <View style={[globalStyles.background, styles.page]}>

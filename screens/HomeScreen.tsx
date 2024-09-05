@@ -5,10 +5,15 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import globalStyles from '../assets/styles/globalStyles';
 import Card from '../components/Card.tsx';
 import ButtonIcon from '../components/buttons/ButtonIcon.tsx';
+import { useSelector } from 'react-redux';
+import { RootState } from '../reducer/store.tsx';
 
 type HomeScreenProps = NativeStackScreenProps<RootStackParamList, 'Home'>;
 
 const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
+  const formData = useSelector((state: RootState) => state.formData);
+  const playerId = formData.id
+  
   return (
     <View style={globalStyles.background}>
       <View style={styles.textContainer}>
@@ -42,12 +47,14 @@ const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
           imageSource={require('../assets/images/arbitre.png')}
         />
       </View>
-      <ButtonIcon 
-        iconSource={require('../assets/images/icons/icon-statistic.png')}
-        link={"Statistics"}
-        style={styles.buttonIcon}
-        navigation={navigation}
-      />
+      { playerId && 
+        <ButtonIcon 
+          iconSource={require('../assets/images/icons/icon-statistic.png')}
+          link={"Statistics"}
+          style={styles.buttonIcon}
+          navigation={navigation}
+        />
+      }
     </View>
   );
 };
