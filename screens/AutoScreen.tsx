@@ -9,7 +9,7 @@ import {RootStackParamList} from '../types/types.ts';
 import {useSelector} from 'react-redux';
 import {RootState} from '../reducer/store.tsx';
 import {apiUrlBack} from '../config.json';
-import {WebSocketProvider} from '../context/WebSocketContext.tsx';
+import {useWebSocket, WebSocketProvider} from '../context/WebSocketContext.tsx';
 import colors from '../assets/styles/colors.tsx';
 import {postFetch} from '../helpers/fetch.js';
 import ButtonLeave from '../components/buttons/ButtonLeave.tsx';
@@ -20,9 +20,8 @@ type AutoScreenRouteProp = RouteProp<RootStackParamList, 'AutoRace'>;
 const AutoScreen = () => {
   const formData = useSelector((state: RootState) => state.formData);
   const route = useRoute<AutoScreenRouteProp>();
-  const raceId = '200';
-  // const {raceId} = route.params;
-  /*const [ws] = useWebSocket();*/
+  const {raceId} = route.params;
+  // const {ws} = useWebSocket();
   const [nbPlayer, setnbPlayer] = useState('');
   useEffect(() => {
     if (raceId) {

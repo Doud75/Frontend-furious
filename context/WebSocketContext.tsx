@@ -9,25 +9,32 @@ import React, {
 import {useSelector} from 'react-redux';
 import {RootState} from '../reducer/store.tsx';
 
-const WebSocketContext = createContext<
-  | [WebSocket | undefined, Dispatch<SetStateAction<WebSocket | undefined>>]
-  | undefined
->(undefined);
+interface WebSocketContextType {
+  ws: WebSocket | undefined;
+  setWs: Dispatch<SetStateAction<WebSocket | undefined>>;
+  messageReceived: boolean;
+  setMessageReceived: Dispatch<SetStateAction<boolean>>;
+}
 
-interface webSocketProps {
+const WebSocketContext = createContext<WebSocketContextType | undefined>(
+  undefined,
+);
+
+interface WebSocketProviderProps {
   children: ReactNode;
   camera: boolean;
   track: boolean;
   nbPlayer: string;
 }
 
-export const WebSocketProvider: React.FC<webSocketProps> = ({
+export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({
   children,
   camera = false,
   track = false,
   nbPlayer = '',
 }) => {
   const [ws, setWs] = useState<WebSocket>();
+  const [messageReceived, setMessageReceived] = useState<boolean>(false);
   const formData = useSelector((state: RootState) => state.formData);
 
   useEffect(() => {
@@ -80,6 +87,9 @@ export const WebSocketProvider: React.FC<webSocketProps> = ({
     };
 
     localWs.onmessage = e => {
+      if (e.data === 'ok') {
+        setMessageReceived(true);
+      }
       console.log('Received message: ', e.data);
     };
 
@@ -95,10 +105,11 @@ export const WebSocketProvider: React.FC<webSocketProps> = ({
       stopCamAndTrack(localWs);
       localWs.close();
     };
-  }, [camera, formData.ip, formData.topic, nbPlayer, track]);
+  }, [camera, formData.ip, formData.topic, nbPlayer, track, formData.ws]);
 
   return (
-    <WebSocketContext.Provider value={[ws, setWs]}>
+    <WebSocketContext.Provider
+      value={{ws, setWs, messageReceived, setMessageReceived}}>
       {children}
     </WebSocketContext.Provider>
   );

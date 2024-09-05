@@ -10,7 +10,7 @@ interface JoystickProps {
 
 const Joystick: React.FC<JoystickProps> = ({radius, innerRadius}) => {
   const [position, setPosition] = useState({x: 0, y: 0});
-  const [ws] = useWebSocket();
+  const {ws} = useWebSocket();
 
   const effectiveRadius = radius - innerRadius;
 

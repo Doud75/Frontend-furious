@@ -1,9 +1,13 @@
 import React from 'react';
 import {TouchableOpacity, StyleSheet, Image} from 'react-native';
 import colors from '../../assets/styles/colors.tsx';
+import {useNavigation} from '@react-navigation/native';
 
 const ButtonLeave = () => {
+  const navigation = useNavigation();
+
   const handleLeave = () => {
+    navigation.goBack();
     console.log(
       'je me tire, me demande pas pourquoi je suis partis sans motif',
     );

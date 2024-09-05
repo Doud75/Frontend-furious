@@ -1,24 +1,22 @@
-import React, {useState} from 'react';
-import {TouchableOpacity, StyleSheet, Text} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {StyleSheet, Text, View} from 'react-native';
 import colors from '../../assets/styles/colors.tsx';
 
-const ButtonAutoMode = () => {
+interface ButtonAutoModeProps {
+  active: boolean;
+}
+
+const ButtonAutoMode: React.FC<ButtonAutoModeProps> = ({active}) => {
   const [buttonText, setButtonText] = useState('Go');
 
-  const handleAutoMode = () => {
-    if (buttonText === 'Go') {
-      setButtonText('Stop');
-      console.log('c parti mon kiki');
-    } else {
-      setButtonText('Go');
-      console.log('c finit bouuh');
-    }
-  };
+  useEffect(() => {
+    setButtonText(active ? 'Stop' : 'Go');
+  }, [active]);
 
   return (
-    <TouchableOpacity style={styles.button} onPressIn={() => handleAutoMode()}>
+    <View style={styles.button}>
       <Text style={styles.buttonText}>{buttonText}</Text>
-    </TouchableOpacity>
+    </View>
   );
 };
 
@@ -42,7 +40,7 @@ const styles = StyleSheet.create({
   buttonText: {
     color: colors.lightBlue,
     fontStyle: 'italic',
-    fontSize: 2,
+    fontSize: 26,
   },
 });
 

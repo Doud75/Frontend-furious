@@ -1,27 +1,38 @@
-import React, {useEffect, useState} from 'react';
-import {View, StyleSheet} from 'react-native';
-import Joystick from '../utils/joystick.tsx';
+import React, {useState} from 'react';
+import {View, StyleSheet, TouchableOpacity} from 'react-native';
 import Camera from '../utils/camera.tsx';
 import Klaxon from '../utils/klaxonButton.tsx';
-import io from 'socket.io-client';
-import {socketUrl} from '../config.json';
 import {RouteProp, useRoute} from '@react-navigation/native';
 import {RootStackParamList} from '../types/types.ts';
-import {useSelector} from 'react-redux';
-import {RootState} from '../reducer/store.tsx';
-import {apiUrlBack} from '../config.json';
 import {WebSocketProvider} from '../context/WebSocketContext.tsx';
 import colors from '../assets/styles/colors.tsx';
+import ButtonAutoMode from '../components/buttons/ButtonAutoMode.tsx';
+import ButtonLeave from '../components/buttons/ButtonLeave.tsx';
 
 type TrackRaceScreenProp = RouteProp<RootStackParamList, 'TrackRace'>;
+
 const TrackRaceScreen = () => {
   const route = useRoute<TrackRaceScreenProp>();
+  const [track, setTrack] = useState(false);
+
+  const handleAutoMode = () => {
+    console.log(track);
+    setTrack(!track);
+  };
 
   return (
-    <WebSocketProvider camera={true} track={true} nbPlayer={''}>
+    <WebSocketProvider camera={true} track={true} nbPlayer="1">
+      <View style={styles.leaveButton}>
+        <ButtonLeave />
+      </View>
+      <TouchableOpacity style={styles.autoMode} onPress={handleAutoMode}>
+        <ButtonAutoMode active={track} />
+      </TouchableOpacity>
+
       <View style={styles.klaxon}>
         <Klaxon />
       </View>
+
       <View style={styles.camera}>
         <Camera />
       </View>
@@ -30,6 +41,13 @@ const TrackRaceScreen = () => {
 };
 
 const styles = StyleSheet.create({
+  leaveButton: {
+    position: 'absolute',
+    right: '5%',
+    top: '5%',
+    width: 'auto',
+    zIndex: 2,
+  },
   joystick: {
     zIndex: 2,
     width: 'auto',
@@ -40,11 +58,18 @@ const styles = StyleSheet.create({
   },
   klaxon: {
     zIndex: 2,
-    backgroundColor: 'yellow',
     position: 'absolute',
     bottom: '10%',
     right: '5%',
-    width: '20%',
+    width: 70,
+    height: 70,
+  },
+  autoMode: {
+    zIndex: 2,
+    width: 'auto',
+    position: 'absolute',
+    bottom: '9%',
+    left: '5%',
   },
   camera: {
     zIndex: 1,

@@ -20,7 +20,7 @@ const ControlScreen = () => {
   const formData = useSelector((state: RootState) => state.formData);
   const route = useRoute<ControlScreenRouteProp>();
   const {raceId} = route.params;
-  /*const [ws] = useWebSocket();*/
+  /*const {ws} = useWebSocket();*/
   const [nbPlayer, setnbPlayer] = useState('');
   useEffect(() => {
     if (raceId) {
