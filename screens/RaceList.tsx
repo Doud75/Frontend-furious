@@ -24,6 +24,7 @@ type RaceListScreenProps = NativeStackScreenProps<
 interface Race {
   id: string;
   name: string;
+  tourCount: string;
 }
 const RaceListScreen: React.FC<RaceListScreenProps> = ({navigation}) => {
   const [races, setRace] = useState<Race[]>([]);
@@ -39,20 +40,12 @@ const RaceListScreen: React.FC<RaceListScreenProps> = ({navigation}) => {
     getFetch(`${apiUrlBack}/race`)
       .then(data => {
         setRace(data ?? []);
-        // Fake data - to delete
-        // setRace([
-        //   {id: '19', name: 'Nom de la course'},
-        //   {id: '9', name: 'Nom de la course 2'},
-        //   {id: '2', name: 'Nom de la course 3'},
-        //   {id: '3', name: 'Nom de la course 4'},
-        //   {id: '123', name: 'Nom de la course 5'},
-        //   {id: '313', name: 'Nom de la course 6'},
-        // ]);
       })
       .catch(error => {
         console.error('Erreur :', error);
       });
   }, [isFocused]);
+
   return (
     <View style={[globalStyles.background]}>
       <BackButton />
@@ -74,8 +67,9 @@ const RaceListScreen: React.FC<RaceListScreenProps> = ({navigation}) => {
 
                 <TouchableOpacity
                   onPress={() => {
-                    navigation.navigate('FreeRace', {
+                    navigation.navigate('Racing', {
                       raceId: item.id,
+                      tourCount: item.tourCount,
                     });
                   }}>
                   <Text style={styles.raceRowButton}>Rejoindre</Text>

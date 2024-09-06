@@ -1,216 +1,161 @@
-import React, {useEffect, useState, useRef} from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  FlatList,
-  SafeAreaView,
-  Button,
-} from 'react-native';
-import io from 'socket.io-client';
+import React, {useEffect, useState} from 'react';
 import {RouteProp, useRoute} from '@react-navigation/native';
 import {RootStackParamList} from '../types/types.ts';
-import {socketUrl, apiUrlBack} from '../config.json';
-import {postFetch} from '../helpers/fetch';
+import {WebSocketProvider} from '../context/WebSocketContext.tsx';
+import ButtonLeave from '../components/buttons/ButtonLeave.tsx';
+import Joystick from '../utils/joystick.tsx';
+import KlaxonButton from '../utils/klaxonButton.tsx';
+import Camera from '../utils/camera.tsx';
+import colors from '../assets/styles/colors.tsx';
+import {StyleSheet, Text, View} from 'react-native';
 
 type RacingScreenRouteProp = RouteProp<RootStackParamList, 'Racing'>;
 
-interface ConnectedProps {
-  id: string;
-  username: string;
-  ip: string;
-  topic: string;
-}
-
 const Racing: React.FC = () => {
+  // static page with fake data
   const route = useRoute<RacingScreenRouteProp>();
   const {raceId, tourCount} = route.params;
-  const [connectedPlayer, setConnectedPlayer] = useState<ConnectedProps[]>([]);
-  const [startRace, setStartRace] = useState(false);
-  const [winner, setWinner] = useState('');
-  const socketRef = useRef<any>(null);
-  const [nbOfTour, setNbOfTour] = useState<number[]>([]);
-  const [raceStartTime, setRaceStartTime] = useState(Date.now);
+  const players = '2';
+
+  const [raceStarted, setRaceStarted] = useState(false);
+  const [counter, setCounter] = useState('');
+  const [raceFinished, setRaceFinished] = useState(false);
+  const [winnerMessage, setWinnerMessage] = useState('');
+
+  const start = true;
 
   useEffect(() => {
-    const socket = io(socketUrl);
-    socketRef.current = socket;
+    if (start) {
+      setTimeout(() => {
+        setCounter('3');
+        setRaceStarted(true);
+      }, 4000);
 
-    console.log('socketUrl from referee', socketUrl);
+      setTimeout(() => {
+        setCounter('2');
+      }, 5000);
 
-    socket.emit('joinGroup', raceId);
+      setTimeout(() => {
+        setCounter('1');
+      }, 6000);
 
-    socket.on('newMessage', message => {
-      console.log('new message from referee', message);
-      if (message.numberOfPlayer) {
-        setConnectedPlayer(prevPlayers => {
-          const newPlayers = [...prevPlayers, message.playerInfo];
-          setNbOfTour(new Array(newPlayers.length).fill(0));
-          return newPlayers;
-        });
-      }
-    });
+      setTimeout(() => {
+        setCounter('GO !');
+      }, 7000);
 
-    return () => {
-      console.log('return from referee');
-      const cleanUp = async () => {
-        const response = await closeRace(raceId);
-        console.log('close race from referee', response);
-        socket.disconnect();
-      };
-      cleanUp();
-    };
-  }, [raceId]);
+      setTimeout(() => {
+        setRaceStarted(false);
+      }, 8000);
 
-  const incrementTour = (index: number, userName: string) => {
-    console.log('inIncrement');
-    if (nbOfTour[index] + 1 <= Number(tourCount)) {
-      setNbOfTour(prevTours => {
-        const updatedTours = [...prevTours];
-        updatedTours[index] += 1;
-        return updatedTours;
-      });
+      setTimeout(() => {
+        setRaceFinished(true);
+      }, 12000);
     }
-    console.log('nbOfTour', nbOfTour[index] + 1);
-    console.log('tourCount', tourCount);
-    console.log('winner', winner);
-    if (nbOfTour[index] + 1 === Number(tourCount) && winner === '') {
-      console.log('shouldSetWinner', userName);
-      setWinner(userName);
+  }, [start]);
+
+  useEffect(() => {
+    if (raceFinished) {
+      const winner = 'JF_le_crack_du_77';
+      setWinnerMessage(`🏆 ${winner}`);
     }
-  };
+  }, [raceFinished]);
 
   return (
-    <SafeAreaView style={styles.container}>
-      <FlatList
-        data={connectedPlayer}
-        keyExtractor={item => item.id}
-        renderItem={({item, index}) => (
-          <View style={styles.conversationDetails} key={item.id}>
-            <View style={styles.nameContentContainer}>
-              {startRace && (
-                <>
-                  <Button
-                    onPress={() => {
-                      incrementTour(index, item.username);
-                    }}
-                    title="+1 tour"
-                    color="#841584"
-                  />
-                  <Text style={styles.conversationName}>
-                    {nbOfTour[index]}/{tourCount}
-                  </Text>
-                </>
-              )}
-              <Text style={styles.conversationName}>{item.username}</Text>
-            </View>
-          </View>
-        )}
-      />
-      {connectedPlayer.length > 0 && !startRace && (
-        <Button
-          onPress={() => {
-            setStartRace(true);
-            setRaceStartTime(Date.now);
-          }}
-          title="start race"
-          color="#841584"
-        />
+    <WebSocketProvider camera={true} track={false} nbPlayer={players}>
+      {raceStarted && (
+        <View style={styles.messageContainer}>
+          <Text style={[styles.message, styles.messageCounter]}>{counter}</Text>
+        </View>
       )}
-      {startRace && (
-        <Button
-          onPress={async () => {
-            await stopRace(raceId, winner, raceStartTime);
-            setStartRace(false);
-          }}
-          title="stop race"
-          color="#841584"
-        />
+
+      {raceFinished && (
+        <View style={styles.messageContainer}>
+          <Text style={[[styles.messageWinner, styles.message]]}>
+            {winnerMessage}
+          </Text>
+        </View>
       )}
-    </SafeAreaView>
+
+      <View style={styles.leaveButton}>
+        <ButtonLeave />
+      </View>
+      <View style={styles.joystick}>
+        <Joystick radius={60} innerRadius={45} />
+      </View>
+      <View style={styles.klaxon}>
+        <KlaxonButton />
+      </View>
+      <View style={styles.camera}>
+        <Camera />
+      </View>
+    </WebSocketProvider>
   );
 };
 
-async function closeRace(raceId: string) {
-  console.log('from close race : ', raceId);
-  return await postFetch(`${apiUrlBack}/close-race`, {raceId});
-  /*const response = await fetch(`${apiUrlBack}/close-race`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      raceId,
-    }),
-  });
-  if (!response.ok) {
-    throw new Error(`Reponse HTTP : ${response.status}`);
-  }
-  return response.json();*/
-}
-
-async function stopRace(raceId: string, winner: string, raceStartTime: number) {
-  console.log('from stop race : ', winner);
-  const raceDuration = Date.now() - raceStartTime;
-  return await postFetch(`${apiUrlBack}/stop-race`, {
-    raceId,
-    winner,
-    raceDuration,
-  });
-  /*const response = await fetch(`${apiUrlBack}/stop-race`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      raceId,
-      winner,
-      raceDuration,
-    }),
-  });
-  if (!response.ok) {
-    throw new Error(`Reponse HTTP : ${response.status}`);
-  }
-  return response.json();*/
-}
-
 const styles = StyleSheet.create({
-  touchable: {
-    bottom: 24,
-  },
-  tinyLogo: {
-    width: 65,
-    height: 65,
-    borderRadius: 400,
-    left: '100%',
-    transform: [{translateX: -80}],
-  },
-  container: {
-    flex: 1,
-    padding: 16,
-  },
-  conversationItem: {
-    paddingVertical: 16,
-  },
-  conversationDetails: {
-    flex: 1,
-  },
-  nameContentContainer: {
-    marginBottom: 4,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+  messageContainer: {
     alignItems: 'center',
+    flex: 1,
+    justifyContent: 'center',
+    zIndex: 2,
   },
-  conversationName: {
-    fontSize: 18,
-    fontWeight: 'bold',
+
+  message: {
+    color: colors.lightBlue,
+    fontStyle: 'italic',
+    fontWeight: '700',
+    lineHeight: 113,
+    textShadowColor: 'rgba(227, 227, 246, 0.40)',
+    textShadowOffset: {width: -1.408, height: -1.408},
+    textShadowRadius: 7.039,
+    textAlign: 'center',
   },
-  updatedAt: {
-    fontSize: 14,
+
+  messageCounter: {
+    fontSize: 113,
   },
-  conversationContent: {
-    fontSize: 16,
-    marginBottom: 6,
+
+  messageWinner: {
+    fontSize: 60,
+  },
+
+  leaveButton: {
+    position: 'absolute',
+    right: '5%',
+    top: '5%',
+    width: 'auto',
+    zIndex: 2,
+  },
+
+  joystick: {
+    zIndex: 2,
+    width: 'auto',
+    position: 'absolute',
+    bottom: '8%',
+    left: '5%',
+  },
+
+  klaxon: {
+    zIndex: 2,
+    position: 'absolute',
+    bottom: '10%',
+    right: '5%',
+    width: 70,
+    height: 70,
+  },
+
+  camera: {
+    zIndex: 1,
+    flex: 1,
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignContent: 'center',
+    position: 'absolute',
+    width: '100%',
+    backgroundColor: colors.background,
+    top: 0,
+    left: 0,
   },
 });
 
