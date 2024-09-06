@@ -12,7 +12,7 @@ import {StyleSheet, Text, View} from 'react-native';
 type RacingScreenRouteProp = RouteProp<RootStackParamList, 'Racing'>;
 
 const Racing: React.FC = () => {
-  // static page with fake data
+  // Static page with fake data
   const route = useRoute<RacingScreenRouteProp>();
   const {raceId, tourCount} = route.params;
   const players = '2';
