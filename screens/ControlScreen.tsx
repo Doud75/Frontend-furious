@@ -27,21 +27,7 @@ const ControlScreen = () => {
       const socket = io(socketUrl);
       console.log('socketUrl from Control', formData.username, socketUrl);
       socket.emit('joinGroup', raceId);
-      /*fetch(`${apiUrlBack}/join-race`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          raceId,
-          formData,
-        }),
-      }).then(response => {
-        if (!response.ok) {
-          throw new Error(`Réponse HTTP : ${response.status}`);
-        }
-        return response.json();
-      });*/
+
       postFetch(`${apiUrlBack}/join-race`, {
         raceId,
         formData,

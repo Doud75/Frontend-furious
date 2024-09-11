@@ -14,41 +14,29 @@ type RacingFormScreenProps = NativeStackScreenProps<
 >;
 const RacingForm: React.FC<RacingFormScreenProps> = ({navigation}) => {
   const [raceName, setRaceName] = useState('');
-  const [tourCount, setTourCount] = useState('2');
+  const [tourCount, setTourCount] = useState('');
   const [error, setError] = useState('');
-
-  const handleSubmit = async () => {
-    const dataRace = await createRace();
-    navigation.navigate('Racing', {
-      raceId: dataRace.raceId,
-      tourCount,
-    });
-  };
 
   async function createRace() {
     if (raceName) {
-      return await postFetch(`${apiUrlBack}/create-race`, {
-        raceName,
-        tourCount,
-      });
-      /*const response = await fetch(`${apiUrlBack}/create-race`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
+      try {
+        const response = await postFetch(`${apiUrlBack}/create-race`, {
           raceName,
           tourCount,
-        }),
-      });
+        });
 
-      if (!response.ok) {
-        throw new Error(`Reponse HTTP : ${response.status}`);
+        if (response && response.raceId) {
+          console.log('Race created with ID:', response.raceId);
+
+          navigation.navigate('Referee', {raceId: response.raceId});
+        } else {
+          console.error('Erreur: Race ID non reçu');
+        }
+      } catch (error: any) {
+        console.error('Erreur :', error);
       }
-
-      return response.json();*/
     } else {
-      setError('Veuillez remplir tout les champs');
+      setError('Veuillez remplir tous les champs');
     }
   }
 
