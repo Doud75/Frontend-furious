@@ -1,24 +1,22 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {View, Text, StyleSheet, ScrollView} from 'react-native';
 import globalStyles from '../../assets/styles/globalStyles';
 import colors from '../../assets/styles/colors';
-import { getFetch } from '../../helpers/fetch';
+import {getFetch} from '../../helpers/fetch';
 import {apiUrlBack} from '../../config.json';
 
-
-interface allStats{
+interface allStats {
   statsGeneral:{
-    username: string,
-    nbrace: string,
-    nbvictory: string,
-    avgduration: string,
+    username: string;
+    nbrace: string;
+    nbvictory: string;
+    avgduration: string;
   }[]
-}
-
+};
 
 const initAllStats = {
   statsGeneral: [],
-}
+};
 
 interface Stat {
   stat: {
@@ -34,7 +32,7 @@ interface StatRowProps {
   value: string;
 }
 
-const StatRow = ({ label, value }: StatRowProps) => (
+const StatRow = ({label, value}: StatRowProps) => (
   <View style={styles.statGeneralItemRow}>
     <Text style={[globalStyles.paragraph14, styles.statGeneralItemLabel]}>
       {label}
@@ -46,15 +44,15 @@ const StatRow = ({ label, value }: StatRowProps) => (
 );
 
 
-const StatGeneralItem = ({ stat }: Stat) => {
- const getAverageDuration = (durationInMs: string) => {
+const StatGeneralItem = ({stat}: Stat) => {
+  const getAverageDuration = (durationInMs: string) => {
     const duration = parseInt(durationInMs, 10);
     const minutes = Math.floor(duration / 60000);
     const seconds = Math.floor((duration % 60000) / 1000);
     const formattedDuration = `${minutes}'${seconds < 10 ? '0' : ''}${seconds}''`;
 
     return formattedDuration;
-  }  
+  };
 
   return (
     <View style={styles.statGeneralItem}>
@@ -62,22 +60,16 @@ const StatGeneralItem = ({ stat }: Stat) => {
         {stat.username}
       </Text>
       <View style={styles.statGeneralItemText}>
-        <StatRow 
-          label="Courses" 
-          value={stat.nbrace} 
-        />
-        <StatRow 
-          label="Victoires" 
-          value={stat.nbvictory} 
-        />
-        <StatRow 
+        <StatRow label="Courses" value={stat.nbrace} />
+        <StatRow label="Victoires" value={stat.nbvictory} />
+        <StatRow
           label="Durée moyenne d’une course" 
           value={getAverageDuration(stat.avgduration)} 
         />
       </View>
     </View>
   );
-}
+};
 const GeneralStatistics = () => {
   const [allStats, setAllStats] = useState<allStats>(initAllStats);
 
@@ -88,8 +80,8 @@ const GeneralStatistics = () => {
       })
       .catch(error => {
         console.error('Erreur :', error);
-    });
-  }, [])
+      });
+  }, []);
   return (
     <ScrollView
       style={styles.statGeneralContainer}
