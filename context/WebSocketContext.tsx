@@ -121,13 +121,13 @@ function stopCamAndTrack(localWs: WebSocket) {
     data: 0,
   };
   localWs.send(JSON.stringify(message));
-  console.log('camera on');
+  console.log('camera off');
   const message2 = {
     cmd: 10,
     data: 0,
   };
   localWs.send(JSON.stringify(message2));
-  console.log('track on');
+  console.log('track off');
 }
 
 export const useWebSocket = () => {

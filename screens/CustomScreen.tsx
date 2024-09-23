@@ -8,7 +8,7 @@ import BackButton from '../components/BackButton.tsx';
 
 const CustomScreen: React.FC = () => {
   return (
-    <WebSocketProvider camera={false} track={false} nbPlayer={'0'}>
+    <WebSocketProvider camera={false} track={false} nbPlayer={''}>
       <View style={[globalStyles.background]}>
         <BackButton />
         <ColorChoice />

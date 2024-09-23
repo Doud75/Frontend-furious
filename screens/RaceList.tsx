@@ -67,9 +67,8 @@ const RaceListScreen: React.FC<RaceListScreenProps> = ({navigation}) => {
 
                 <TouchableOpacity
                   onPress={() => {
-                    navigation.navigate('Racing', {
+                    navigation.navigate('FreeRace', {
                       raceId: item.id,
-                      tourCount: item.tourCount,
                     });
                   }}>
                   <Text style={styles.raceRowButton}>Rejoindre</Text>

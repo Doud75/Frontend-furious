@@ -85,7 +85,7 @@ const RefereeScreen: React.FC<RefereeScreenProps> = ({navigation}) => {
         });
       }
     });
-  }, [raceId]);
+  }, [raceId, connectedPlayer]);
 
   useEffect(() => {
     console.log({step});

@@ -28,10 +28,7 @@ const PlayerScreen: React.FC<PlayerScreenProps> = ({navigation}) => {
         <Text style={[globalStyles.title1, styles.title1]}>
           Modes de conduite
         </Text>
-        <Text style={globalStyles.paragraph}>
-          Choisis ton mode de conduite et bla bla bla blabuucdl jkuklszb
-          fzviafjioef zefkgufzlfzie faugaofgie
-        </Text>
+        <Text style={globalStyles.paragraph}>Choisis ton mode de conduite</Text>
       </View>
       <View style={styles.cardContainer}>
         <Card

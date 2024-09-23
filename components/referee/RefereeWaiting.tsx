@@ -18,10 +18,13 @@ const RefereeWaiting = ({
   setRaceStartTime,
 }: RefereeWaitingProps) => {
   const handleStartRace = () => {
-    console.log('startRace');
-    console.log('date now', Date.now());
-    setRaceStartTime(Date.now());
-    return onNextStep();
+    if (players.length > 0) {
+      console.log('startRace');
+      console.log('date now', Date.now());
+      setRaceStartTime(Date.now());
+      return onNextStep();
+    }
+    return;
   };
 
   const getPlayersName = () => {
