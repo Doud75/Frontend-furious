@@ -46,7 +46,7 @@ const RefereeScreen: React.FC<RefereeScreenProps> = ({navigation}) => {
   const [race, setRace] = useState<Race>(initRace);
 
   const [step, setStep] = useState(1);
-  const [winner, setWinner] = useState('Trop fort');
+  const [winner, setWinner] = useState('');
 
   const socketRef = useRef<any>(null);
   const [connectedPlayer, setConnectedPlayer] = useState<ConnectedProps[]>([]);
@@ -86,14 +86,6 @@ const RefereeScreen: React.FC<RefereeScreenProps> = ({navigation}) => {
       }
     });
   }, [raceId]);
-
-  useEffect(() => {
-    console.log({step});
-  }, [step]);
-
-  useEffect(() => {
-    console.log({winner});
-  }, [winner]);
 
   useEffect(() => {
     getFetch(`${apiUrlBack}/race`)

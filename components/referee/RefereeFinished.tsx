@@ -38,9 +38,6 @@ const RefereeFinished = ({winner, raceDuration}: RefereeFinishedProps) => {
 };
 
 const styles = StyleSheet.create({
-  // container: {
-
-  // },
   row: {
     marginBottom: 32,
   },

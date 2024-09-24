@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import globalStyles from '../../assets/styles/globalStyles';
 import ButtonPrimary from '../buttons/ButtonPrimary';
@@ -17,19 +17,21 @@ const RefereeWaiting = ({
   onNextStep,
   setRaceStartTime,
 }: RefereeWaitingProps) => {
+  const [playersUsernames, setPlayersUsernames] = useState('');
+
   const handleStartRace = () => {
-    console.log('startRace');
-    console.log('date now', Date.now());
     setRaceStartTime(Date.now());
     return onNextStep();
   };
 
-  const getPlayersName = () => {
-    console.log({players});
-    return players.length > 0
-      ? players.map((player: {username: string}) => player.username)
-      : "Aucun joueur n'a encore rejoint la course";
-  };
+  useEffect(() => {
+    if (players.length > 0) {
+      const playersUsernames = players.map((player: {username: string}) => player.username).join(", ");
+      setPlayersUsernames(playersUsernames);
+    } else{
+      setPlayersUsernames("Aucun joueur n'a encore rejoint la course");
+    }
+  }, [players]);
 
   return (
     <View style={styles.statGeneralContainer}>
@@ -37,7 +39,7 @@ const RefereeWaiting = ({
         Nombre de tours : {tourCount}
       </Text>
       <Text style={[globalStyles.paragraph, styles.text]}>
-        Joueur(s) : {getPlayersName()}
+        Joueur(s) : {playersUsernames}
       </Text>
       <ButtonPrimary
         text="Lancer la course"

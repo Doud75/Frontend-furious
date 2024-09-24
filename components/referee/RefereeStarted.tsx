@@ -27,10 +27,6 @@ const RefereeStarted = ({
 }: RefereeStartedProps) => {
   const [nbOfTour, setNbOfTour] = useState<number[]>([1, 1]);
 
-  useEffect(() => {
-    console.log({nbOfTour});
-  }, [nbOfTour]);
-
   async function finishRace(
     raceId: number,
     winner: string,
@@ -41,16 +37,21 @@ const RefereeStarted = ({
     console.log({raceDuration});
     setRaceDuration(raceDuration);
 
-    return await postFetch(`${apiUrlBack}/stop-race`, {
-      raceId,
-      winner,
-      raceDuration,
-    });
+    try {
+      await postFetch(`${apiUrlBack}/stop-race`, {
+        raceId,
+        winner,
+        raceDuration,
+      });
+    } catch (error) {
+      console.error('Error stoping race:', error);
+    }
+
+    return onNextStep();
   }
 
   let winner: any;
   const incrementTour = (index: number, userName: string) => {
-    console.log('inIncrement');
     if (nbOfTour[index] + 1 <= Number(tourCount)) {
       setNbOfTour(prevTours => {
         const updatedTours = [...prevTours];
@@ -65,21 +66,8 @@ const RefereeStarted = ({
       setWinner(userName);
       winner = userName;
       finishRace(raceId, winner, raceStartTime);
-      onNextStep();
     }
-    console.log('winner let', winner);
   };
-
-  // const playersRaw = [
-  //   {
-  //     name: 'Nom',
-  //     tourCount: nbOfTour[0],
-  //   },
-  //   {
-  //     name: 'Nom2',
-  //     tourCount: nbOfTour[1],
-  //   },
-  // ];
 
   const getPlayerTourCount = (playerIndex: number) => {
     return nbOfTour[playerIndex];
